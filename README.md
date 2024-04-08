@@ -14,7 +14,6 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rerowros)](https://github.com/anuraghazra/github-readme-stats)
 <div id="header" align="center">
   <h1>Hello there, I'm [your name]</h1>
   <img src="[insert an image of yourself or something you like]" width="200" />
@@ -43,5 +42,5 @@ Here are some ideas to get you started:
 </div>
 <div id="stats">
   <h2>Stats</h2>
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=rerowros)](https://github.com/anuraghazra/github-readme-stats)
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rerowros)](https://github.com/anuraghazra/github-readme-stats)
 </div>

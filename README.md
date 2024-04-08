@@ -46,4 +46,6 @@ Here are some ideas to get you started:
     <li>Focusing on learning [languages or technologies you're currently studying] right now.</li>
   </ul>
 </div>
+  <img src="https://streak-stats.demolab.com?user=[your username]&theme=transparent&fire=EB5454" alt="GitHub Streak"/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=[Rerowros]&layout=compact&theme=vision-friendly-dark" alt="Top Languages"/>
 

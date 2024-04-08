@@ -15,17 +15,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-<picture>
-  <source
-    srcset="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true&theme=dark"
-    media="(prefers-color-scheme: dark)"
-  />
-  <source
-    srcset="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true"
-    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-  />
-  <img src="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true" />
-</picture>
+
 
 <div id="header" align="center">
   <h1>Hello there, I'm [your name]</h1>
@@ -56,7 +46,17 @@ Here are some ideas to get you started:
 <div id="stats">
   <h2>Stats</h2>
     <img src="https://streak-stats.demolab.com?user=[Rerowros]&theme=transparent&fire=EB5454" alt="GitHub Streak"/>
-
+<picture>
+  <source
+    srcset="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true&theme=dark"
+    media="(prefers-color-scheme: dark)"
+  />
+  <source
+    srcset="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true"
+    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+  />
+  <img src="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true" />
+</picture>
 </div>
 
 

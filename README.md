@@ -42,8 +42,7 @@ Here are some ideas to get you started:
 </div>
 <div id="stats">
   <h2>Stats</h2>
-  [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
-
+  ![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?rerowros=anuraghazra&show_icons=true)
   <img src="https://streak-stats.demolab.com?user=[your username]&theme=transparent&fire=EB5454" alt="GitHub Streak"/>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=[your username]&layout=compact&theme=vision-friendly-dark" alt="Top Languages"/>
 </div>

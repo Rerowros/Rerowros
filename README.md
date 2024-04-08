@@ -16,9 +16,9 @@ Here are some ideas to get you started:
 -->
 <div id="stats">
   <h2>Stats</h2>
+</div>
   [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rerowros)](https://github.com/anuraghazra/github-readme-stats)
 
-</div>
 
 <div id="header" align="center">
   <h1>Hello there, I'm [your name]</h1>

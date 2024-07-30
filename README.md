@@ -15,7 +15,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-
+<h3>заполню через неделю</h3>
 <div id="stats">
   <h2>Stats</h2>
     <img src="https://streak-stats.demolab.com?user=[Rerowros]&theme=transparent&fire=EB5454" alt="GitHub Streak"/>

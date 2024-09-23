@@ -28,8 +28,10 @@ I am a novice programmer, interested in web development and native application d
 
 
 ### 📱 Native applications:
-- [**Node JS**](https://github.com/Rerowros/T-BANK_JS_BACKEND) 
-
+- [**Node JS**](https://github.com/Rerowros/T-BANK_JS_BACKEND)
+- 
+### 📱 lua is similar:
+- **Paradox Interactive** - Hearts Of Iron 4 Modification
 
 ## 📫 Contact me:
 - [Gmail](mailto:Rerowros@gmail.com)

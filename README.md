@@ -1,6 +1,5 @@
 ## 🧑‍💻 About Me  
-ISTJ | Logical thinker with a passion for creating robust software solutions.  
-Focused on developing clean and efficient code with attention to detail and practical solutions.  
+ISTJ | Focused on developing clean and efficient code with attention to detail and practical solutions.  
 
 ## Contact Me
 [Telegram](https://t.me/Rerowros)

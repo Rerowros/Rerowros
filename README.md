@@ -1,7 +1,6 @@
 ## 🧑‍💻 About Me  
 ISTJ | Focused on developing clean and efficient code with attention to detail and practical solutions.  
 
-## Contact Me
 [Telegram](https://t.me/Rerowros)
 ---
 

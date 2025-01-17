@@ -30,7 +30,9 @@ ISTJ | Focused on developing clean and efficient code with attention to detail a
 - [**TeleSwap**](https://github.com/Rerowros/TeleSwap)  
   A Telegram bot that replaces user-sent messages with content from public Telegram channels.  
   **Use Case:** Automates the replacement of voice messages or other content types.
-  
+- [**Telethon Client Wrapper**](https://github.com/Rerowros/telethon_client_wrapper)  
+  Simplifies the setup of Telethon clients for Telegram bots by handling configuration loading and client creation.  
+
 ## 📊 Stats  
 <img src="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true&theme=radical"/>  
 

@@ -1,6 +1,6 @@
 ## 🧑‍💻 About Me  
 ISTJ | Focused on developing clean and efficient code with attention to detail and practical solutions.  
-
+<a href="https://ru.stackoverflow.com/users/655299/yaroslav"><img src="https://ru.stackoverflow.com/users/flair/655299.png?theme=dark" width="208" height="58" alt="Профиль участника Yaroslav на сайте &#171;Stack Overflow на русском&#187;, Вопросы и ответы для программистов" title="Stack Overflow Russia"></a> <a href="https://github.com/Rerowros" align="left">
 ## 🚀 My skills:
 - **Programming languages:** <br>
 <a href="https://www.python.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/python-colored.svg" width="36" height="36" alt="Python" /></a>
@@ -28,5 +28,6 @@ ISTJ | Focused on developing clean and efficient code with attention to detail a
 - [**AlphaPawn**](https://github.com/Rerowros/AlphaPawn)  
   The basic implementation of a simple neural network for playing chess. The network uses Monte Carlo Tree Search (MCTS) and self-play to improve its skills.
 
-## 📊 Stats  
-<img src="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true&theme=radical"/>  <a href="https://github.com/Rerowros" align="left"> <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Rerowros&langs_count=10&title_color=0891b2&text_color=ffffff&icon_color=0891b2&bg_color=1c1917&hide_border=true&locale=en&custom_title=Top%20%Languages" alt="Top Languages" /></a>
+## 📊 Stats
+<img src="https://github-readme-stats.vercel.app/api?username=Rerowros&show_icons=true&theme=radical"/> 
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Rerowros&langs_count=10&title_color=0891b2&text_color=ffffff&icon_color=0891b2&bg_color=1c1917&hide_border=true&locale=en&custom_title=Top%20%Languages" alt="Top Languages" /></a>

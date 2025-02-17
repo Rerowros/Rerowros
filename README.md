@@ -1,5 +1,3 @@
-## 🧑‍💻 About Me  
-ISTJ | Focused on developing clean and efficient code with attention to detail and practical solutions.  
 <a href="https://ru.stackoverflow.com/users/655299/yaroslav"><img src="https://ru.stackoverflow.com/users/flair/655299.png?theme=dark" width="208" height="58" alt="Профиль участника Yaroslav на сайте &#171;Stack Overflow на русском&#187;, Вопросы и ответы для программистов" title="Stack Overflow Russia"></a> <a href="https://github.com/Rerowros" align="left">
 ## 🚀 My skills:
 - **Programming languages:** <br>

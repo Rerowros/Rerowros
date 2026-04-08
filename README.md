@@ -11,9 +11,6 @@
   </p>
 
   <p>
-    <a href="https://jerseyfc.me" target="_blank">
-      <img src="https://img.shields.io/badge/Portfolio-JerseyFC.me-0891b2?style=for-the-badge&logo=astro&logoColor=white" alt="Portfolio" />
-    </a>
     <a href="https://t.me/rerowros" target="_blank">
       <img src="https://img.shields.io/badge/Telegram-Contact_Me-26A5E4?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" />
     </a>
@@ -92,10 +89,6 @@ The profile is intentionally selective. Extended write-ups and repository select
 
 <div align="center">
   <img src="https://github-readme-streak-stats.herokuapp.com?user=Rerowros&theme=github-dark&hide_border=true" alt="GitHub Streak" />
-</div>
-
-<div align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=Rerowros&theme=darkhub&no-frame=true&no-bg=true&margin-w=8&rank=SECRET,SSS,SS,S,AAA,AA,A,B,C" alt="Trophies" />
 </div>
 
 <div align="center">

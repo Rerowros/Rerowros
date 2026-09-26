@@ -22,6 +22,12 @@ I run a production VPN product end to end and contribute upstream to the open-so
 
 **BPN / BadVPN** *(private, in production)* — the VPN product itself: Next.js + Prisma/Postgres backend, Python Telegram bot and Mini App, multi-brand. ~190k LOC, 1.8k commits, 160+ test files. Traffic accounting on a ledger with rollover (shadow validation, staged rollout, fail-closed gates), payment reconciliation that does not trust webhooks, idempotent admin actions via outbox, front-node → exit routing for restricted mobile networks. Public pieces: [badvpn-routing](https://github.com/Rerowros/badvpn-routing) (Mihomo rulesets with source-checking CI) and [server-checker](https://github.com/Rerowros/server-checker) (VPS reachability and DPI checks).
 
+**[sre-agent-bench](https://github.com/Rerowros/sre-agent-bench)** — benchmark of AI coding agents repairing a deliberately broken Ubuntu server over SSH: 11 injected faults (service, creds, proxy, DB exposure, backups, restart policy), auditd action capture, an external verifier that checks survival after SIGKILL and reboot. Results for 11 model/harness configurations.
+
+**[wiki-mcp](https://github.com/Rerowros/wiki-mcp)** — agent-maintained research wiki served as a remote MCP server on Cloudflare Workers: OAuth 2.1 for claude.ai/ChatGPT, D1 + KV, agents write through proposal branches that merge only after a schema-lint CI gate, retrieval tracked against a golden set (recall@5 0.83 on the private 536-page instance).
+
+**[lumacalc](https://github.com/Rerowros/lumacalc)** — native Windows calculator in Rust + Slint: pure engine crate with `unsafe` forbidden, thin Win32 platform layer, clippy pedantic, per-user install.
+
 **[Remoji-tg-mcp](https://github.com/Rerowros/Remoji-tg-mcp)** — MCP server for finding Telegram custom emoji and stickers, [on PyPI](https://pypi.org/project/remoji-tg-mcp/).
 **[yookassa-telegram](https://github.com/Rerowros/yookassa_telegram)** — YooKassa payments for aiogram 3: fiscal receipts, webhooks, refunds, [on PyPI](https://pypi.org/project/yookassa-telegram/).
 

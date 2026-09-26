@@ -22,6 +22,12 @@
 
 **BPN / BadVPN** *(приватный, в продакшене)* — сам VPN-продукт: бэкенд на Next.js + Prisma/Postgres, Telegram-бот на Python и Mini App, несколько брендов. ~190k строк, 1.8k коммитов, 160+ тестовых файлов. Учёт трафика на леджере с переносом остатка (shadow-валидация, выкатка волнами, fail-closed гейты), сверка платежей без доверия вебхукам, идемпотентные админ-действия через outbox, маршрут front-нода → exit для ограниченных мобильных сетей. Публичные части: [badvpn-routing](https://github.com/Rerowros/badvpn-routing) (правила Mihomo с CI-проверкой источников) и [server-checker](https://github.com/Rerowros/server-checker) (проверка доступности VPS и DPI).
 
+**[sre-agent-bench](https://github.com/Rerowros/sre-agent-bench)** — бенчмарк AI-агентов, которые по SSH чинят специально сломанный Ubuntu-сервер: 11 внесённых неисправностей (сервис, креды, прокси, открытая БД, бэкапы, restart policy), запись действий через auditd, внешний верификатор с проверкой после SIGKILL и перезагрузки. Результаты для 11 конфигураций моделей.
+
+**[wiki-mcp](https://github.com/Rerowros/wiki-mcp)** — исследовательская вики, которую ведут агенты, как удалённый MCP-сервер на Cloudflare Workers: OAuth 2.1 для claude.ai/ChatGPT, D1 + KV, запись через proposal-ветки с мержем только после CI-проверки схемы, качество поиска на эталонном наборе (recall@5 0.83 на приватной вики из 536 страниц).
+
+**[lumacalc](https://github.com/Rerowros/lumacalc)** — нативный калькулятор под Windows на Rust + Slint: чистый крейт-движок без `unsafe`, тонкий слой Win32, clippy pedantic, установка без прав админа.
+
 **[Remoji-tg-mcp](https://github.com/Rerowros/Remoji-tg-mcp)** — MCP-сервер для поиска кастомных эмодзи и стикеров Telegram, [на PyPI](https://pypi.org/project/remoji-tg-mcp/).
 **[yookassa-telegram](https://github.com/Rerowros/yookassa_telegram)** — оплата ЮKassa для aiogram 3: чеки 54-ФЗ, вебхуки, возвраты, [на PyPI](https://pypi.org/project/yookassa-telegram/).
 

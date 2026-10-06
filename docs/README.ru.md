@@ -4,8 +4,8 @@
 </picture>
 
 <p>
-  <a href="https://t.me/rerowros"><img src="https://img.shields.io/badge/Telegram-@rerowros-26A5E4?logo=telegram&logoColor=white" alt="Telegram"></a>
-  <a href="../README.md"><img src="https://img.shields.io/badge/README-in%20English-8b3dff" alt="README in English"></a>
+  <a href="https://t.me/rerowros"><img src="https://img.shields.io/badge/Telegram-@rerowros-171717?logo=telegram&logoColor=white&labelColor=000000&style=flat-square" alt="Telegram"></a>
+  <a href="../README.md"><img src="https://img.shields.io/badge/README-in%20English-171717?labelColor=000000&style=flat-square" alt="README in English"></a>
 </p>
 
 Делаю и веду VPN-продукт целиком: Telegram-бот и бэкенд, приложения для Windows и Android, пропатченное ядро и серверы. Контрибьючу в open-source, на котором он построен.
@@ -28,7 +28,7 @@
 <summary><b>Скриншоты, скорость подключения, релизы</b></summary>
 <br>
 
-[![Android release](https://img.shields.io/github/v/release/Rerowros/bpn-android-releases?label=APK&logo=android&logoColor=white&color=3DDC84)](https://github.com/Rerowros/bpn-android-releases/releases/latest)
+[![Android release](https://img.shields.io/github/v/release/Rerowros/bpn-android-releases?label=APK&logo=android&logoColor=white&color=171717&labelColor=000000&style=flat-square)](https://github.com/Rerowros/bpn-android-releases/releases/latest)
 
 Подключение в одно нажатие, отдельный режим для мобильного интернета на белых списках, подписка из Telegram или по QR добавляется сама. Обновляется сам с нашего сервера; все APK подписаны одним ключом, SHA-256 публикуется в релизе. Ядро — [мой форк mihomo](https://github.com/Rerowros/mihomo/tree/bpn/v1.19.32).
 
@@ -57,7 +57,7 @@
 <summary><b>Что внутри</b></summary>
 <br>
 
-[![Windows release](https://img.shields.io/github/v/release/Rerowros/bpn-releases?label=installer&logo=windows&logoColor=white&color=0078D4)](https://github.com/Rerowros/bpn-releases/releases/latest)
+[![Windows release](https://img.shields.io/github/v/release/Rerowros/bpn-releases?label=installer&logo=windows&logoColor=white&color=171717&labelColor=000000&style=flat-square)](https://github.com/Rerowros/bpn-releases/releases/latest)
 
 Клиент для Windows 10/11. Интерфейс на Tauri через IPC управляет привилегированным сервисом на Rust, который держит Mihomo TUN на моём форке ядра. Опционально zapret + WinDivert для YouTube, Discord и игр. При первом подключении сам скачивает mihomo, zapret и WinDivert и сверяет каждый по хешу, дальше обновляется сам. 25k строк Rust, 158 тестов. Код приватный, установщики публичные.
 
@@ -152,35 +152,7 @@
 
 </details>
 
-<a href="https://github.com/Rerowros/sre-agent-bench">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="../assets/banner-sre-bench-ru-dark.svg">
-  <img alt="sre-agent-bench" src="../assets/banner-sre-bench-ru-light.svg" width="100%">
-</picture>
-</a>
-
-<details>
-<summary><b>Как устроено</b></summary>
-<br>
-
-Специально сломанный Ubuntu-сервер (Flask, PostgreSQL, Nginx, systemd) с 11 неисправностями: упавший сервис, неверные креды, сломанный прокси, открытая наружу БД, нет бэкапов, плохая restart policy и другое. Все действия агента пишутся через auditd. Внешний верификатор проверяет, что починка переживает SIGKILL и перезагрузку. Результаты для 11 конфигураций моделей.
-
-</details>
-
-<a href="https://github.com/Rerowros/wiki-mcp">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="../assets/banner-wiki-mcp-ru-dark.svg">
-  <img alt="wiki-mcp" src="../assets/banner-wiki-mcp-ru-light.svg" width="100%">
-</picture>
-</a>
-
-<details>
-<summary><b>Как устроено</b></summary>
-<br>
-
-Исследовательская вики на Cloudflare Workers (D1 + KV), к которой claude.ai и ChatGPT подключаются по OAuth 2.1. Агенты не пишут в неё напрямую: правки идут через proposal-ветки и мержатся только после CI-проверки схемы. Качество поиска отслеживается на эталонном наборе: recall@5 0.83 на приватной вики из 536 страниц.
-
-</details>
+**Ещё:** [sre-agent-bench](https://github.com/Rerowros/sre-agent-bench) — бенчмарк, где AI-агенты по SSH чинят специально сломанный Ubuntu-сервер, а внешний верификатор проверяет, что починка переживает SIGKILL и перезагрузку · [wiki-mcp](https://github.com/Rerowros/wiki-mcp) — исследовательская вики, которую ведут агенты, как удалённый MCP-сервер на Cloudflare Workers.
 
 ## Ещё контрибьючу
 
@@ -200,15 +172,4 @@
 
 </details>
 
-## Стек
-
-<p>
-  <img src="https://skillicons.dev/icons?i=py,ts,rust,kotlin,go,nextjs,fastapi,tauri,androidstudio,postgres,prisma,cloudflare,linux&perline=13" alt="Python, TypeScript, Rust, Kotlin, Go, Next.js, FastAPI, Tauri, Android, PostgreSQL, Prisma, Cloudflare, Linux">
-</p>
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Rerowros/Rerowros/output/snake-dark.svg">
-  <img alt="Contribution snake" src="https://raw.githubusercontent.com/Rerowros/Rerowros/output/snake-light.svg" width="100%">
-</picture>
-
-<sub>Все картинки здесь генерируются кодом из [`scripts/`](../scripts); карточка активности и змейка перерисовываются каждый день через GitHub Actions.</sub>
+<sub>Все картинки здесь генерируются кодом из [`scripts/`](../scripts); карточка активности перерисовывается каждый день через GitHub Actions.</sub>

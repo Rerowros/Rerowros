@@ -4,8 +4,8 @@
 </picture>
 
 <p>
-  <a href="https://t.me/rerowros"><img src="https://img.shields.io/badge/Telegram-@rerowros-26A5E4?logo=telegram&logoColor=white" alt="Telegram"></a>
-  <a href="docs/README.ru.md"><img src="https://img.shields.io/badge/README-по--русски-8b3dff" alt="README in Russian"></a>
+  <a href="https://t.me/rerowros"><img src="https://img.shields.io/badge/Telegram-@rerowros-171717?logo=telegram&logoColor=white&labelColor=000000&style=flat-square" alt="Telegram"></a>
+  <a href="docs/README.ru.md"><img src="https://img.shields.io/badge/README-по--русски-171717?labelColor=000000&style=flat-square" alt="README in Russian"></a>
 </p>
 
 I build and run a VPN product end to end: the Telegram bot and backend, the Windows and Android apps, a patched proxy core and the servers. I also contribute upstream to the open-source stack it runs on.
@@ -28,7 +28,7 @@ I build and run a VPN product end to end: the Telegram bot and backend, the Wind
 <summary><b>Screenshots, connect speed, releases</b></summary>
 <br>
 
-[![Android release](https://img.shields.io/github/v/release/Rerowros/bpn-android-releases?label=APK&logo=android&logoColor=white&color=3DDC84)](https://github.com/Rerowros/bpn-android-releases/releases/latest)
+[![Android release](https://img.shields.io/github/v/release/Rerowros/bpn-android-releases?label=APK&logo=android&logoColor=white&color=171717&labelColor=000000&style=flat-square)](https://github.com/Rerowros/bpn-android-releases/releases/latest)
 
 Connects in one tap, has a separate mode for mobile networks that only let whitelisted sites through, and adds the subscription from Telegram or a QR code by itself. Updates itself from our own server; every APK is signed with one key and its SHA-256 is published with the release. The core is [my mihomo fork](https://github.com/Rerowros/mihomo/tree/bpn/v1.19.32).
 
@@ -57,7 +57,7 @@ Connects in one tap, has a separate mode for mobile networks that only let white
 <summary><b>What's inside</b></summary>
 <br>
 
-[![Windows release](https://img.shields.io/github/v/release/Rerowros/bpn-releases?label=installer&logo=windows&logoColor=white&color=0078D4)](https://github.com/Rerowros/bpn-releases/releases/latest)
+[![Windows release](https://img.shields.io/github/v/release/Rerowros/bpn-releases?label=installer&logo=windows&logoColor=white&color=171717&labelColor=000000&style=flat-square)](https://github.com/Rerowros/bpn-releases/releases/latest)
 
 Desktop client for Windows 10/11. A Tauri UI talks over IPC to a privileged Rust service that runs Mihomo TUN on my core fork. Optional zapret + WinDivert unblock YouTube, Discord and games. On first connect it downloads mihomo, zapret and WinDivert and checks each by hash; after that it updates itself. 25k lines of Rust, 158 tests. Source is private, installers are public.
 
@@ -152,35 +152,7 @@ Syncs allow-listed chats into SQLite FTS5 with hybrid retrieval and local transc
 
 </details>
 
-<a href="https://github.com/Rerowros/sre-agent-bench">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-sre-bench-dark.svg">
-  <img alt="sre-agent-bench" src="assets/banner-sre-bench-light.svg" width="100%">
-</picture>
-</a>
-
-<details>
-<summary><b>How it works</b></summary>
-<br>
-
-A deliberately broken Ubuntu box (Flask, PostgreSQL, Nginx, systemd) with 11 injected faults: a dead service, wrong credentials, a broken proxy, an exposed database, missing backups, a bad restart policy and more. Every agent action is captured with auditd. An external verifier then checks that the fix survives SIGKILL and a reboot. Results for 11 model/harness configurations.
-
-</details>
-
-<a href="https://github.com/Rerowros/wiki-mcp">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-wiki-mcp-dark.svg">
-  <img alt="wiki-mcp" src="assets/banner-wiki-mcp-light.svg" width="100%">
-</picture>
-</a>
-
-<details>
-<summary><b>How it works</b></summary>
-<br>
-
-A research wiki on Cloudflare Workers (D1 + KV) that claude.ai and ChatGPT connect to over OAuth 2.1. Agents never write to it directly: changes go through proposal branches that merge only after a schema-lint CI gate. Retrieval quality is tracked on a golden set: recall@5 0.83 on the private 536-page instance.
-
-</details>
+**Also built:** [sre-agent-bench](https://github.com/Rerowros/sre-agent-bench) — a benchmark where AI agents repair a deliberately broken Ubuntu server over SSH, with an external verifier that checks the fix survives SIGKILL and reboot · [wiki-mcp](https://github.com/Rerowros/wiki-mcp) — an agent-maintained research wiki served as a remote MCP server on Cloudflare Workers.
 
 ## Also contributing
 
@@ -200,15 +172,4 @@ A research wiki on Cloudflare Workers (D1 + KV) that claude.ai and ChatGPT conne
 
 </details>
 
-## Stack
-
-<p>
-  <img src="https://skillicons.dev/icons?i=py,ts,rust,kotlin,go,nextjs,fastapi,tauri,androidstudio,postgres,prisma,cloudflare,linux&perline=13" alt="Python, TypeScript, Rust, Kotlin, Go, Next.js, FastAPI, Tauri, Android, PostgreSQL, Prisma, Cloudflare, Linux">
-</p>
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Rerowros/Rerowros/output/snake-dark.svg">
-  <img alt="Contribution snake" src="https://raw.githubusercontent.com/Rerowros/Rerowros/output/snake-light.svg" width="100%">
-</picture>
-
-<sub>Every image here is generated from code in [`scripts/`](scripts); the activity card and the snake are re-rendered daily by GitHub Actions.</sub>
+<sub>Every image here is generated from code in [`scripts/`](scripts); the activity card is re-rendered daily by GitHub Actions.</sub>

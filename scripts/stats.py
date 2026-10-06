@@ -10,13 +10,9 @@ import urllib.request
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from render_assets import MONO, THEMES, frame, svg, t
+from render_assets import MONO, THEMES, frame, hline, kick, svg, t, vline
 
 LOGIN = os.environ.get("LOGIN", "Rerowros")
-LEVELS = {
-    "dark": ["#161b22", "#22306b", "#2f6bff", "#8b3dff", "#e81cff"],
-    "light": ["#ebedf0", "#c7d4ff", "#2f6bff", "#8b3dff", "#e81cff"],
-}
 QUERY = """
 query($login: String!, $prs: String!) {
   user(login: $login) {
@@ -58,61 +54,53 @@ def streaks(days):
     return current, longest
 
 
-def thresholds(days):
-    nz = sorted(d["contributionCount"] for d in days if d["contributionCount"])
-    if not nz:
-        return [1, 1, 1]
-    return [nz[int(len(nz) * q)] for q in (0.25, 0.5, 0.75)]
-
-
-def level(n, th):
-    if n == 0:
-        return 0
-    return 1 + sum(n > x for x in th)
-
-
 def card(cal, upstream, theme):
-    c, lv = THEMES[theme], LEVELS[theme]
+    c = THEMES[theme]
     weeks = cal["weeks"]
     days = [d for w in weeks for d in w["contributionDays"]]
     current, longest = streaks(days)
-    th = thresholds(days)
-    W, H = 1200, 360
+    W, H = 1200, 330
     b = [frame(W, H, c)]
-    b.append(t(56, 58, "ACTIVITY · LAST 12 MONTHS", 15, "url(#g)", 700, font=MONO, extra='letter-spacing="1.5"'))
-    b.append(t(1144, 58, f"updated {datetime.now(timezone.utc):%Y-%m-%d}", 13, c["faint"], 500, "end", MONO))
+    b.append(kick(40, 44, "Activity · last 12 months", c))
+    b.append(t(1160, 44, f"updated {datetime.now(timezone.utc):%Y-%m-%d}", 13, c["faint"], 500, "end", MONO))
+    b.append(hline(0, W, 66, c))
     stats = [(f"{cal['totalContributions']:,}", "contributions, incl. private"),
              (str(current), "days, current streak"), (str(longest), "days, longest streak"),
              (str(upstream), "merged PRs to other repos")]
     for k, (num, lab) in enumerate(stats):
-        x = 56 + k * 272
-        b.append(t(x, 108, num, 38, "url(#g)", 700))
-        b.append(t(x, 134, lab, 16, c["muted"]))
+        x = k * 300
+        if k:
+            b.append(vline(x, 66, 160, c))
+        b.append(t(x + 40, 116, num, 36, c["text"], 600, extra='letter-spacing="-1"'))
+        b.append(t(x + 40, 142, lab, 15, c["muted"]))
+    b.append(hline(0, W, 160, c))
 
-    cell, gap = 14, 4
-    x0 = (W - len(weeks) * (cell + gap) + gap) / 2
-    y0 = 186
+    # contributions per week
+    totals = [sum(d["contributionCount"] for d in w["contributionDays"]) for w in weeks]
+    peak = max(totals) or 1
+    # one huge week would flatten the rest, so the axis tops out at 1.5x the 90th percentile and taller bars are clipped
+    nz = sorted(n for n in totals if n)
+    top = min(peak, nz[int(len(nz) * 0.9)] * 1.5) if nz else 1
+    x0, x1, base, hmax = 40, 1160, 282, 72
+    step = (x1 - x0) / len(weeks)
+    bw = step * 0.62
     last_month = None
-    for wi, w in enumerate(weeks):
-        x = x0 + wi * (cell + gap)
+    for i, (w, n) in enumerate(zip(weeks, totals)):
+        x = x0 + i * step
+        h = max(2, hmax * min(n, top) / top) if n else 0
+        if h:
+            fill = c["text"] if i == len(weeks) - 1 else c["muted"]
+            b.append(f'<rect x="{x:.1f}" y="{base - h:.1f}" width="{bw:.1f}" height="{h:.1f}" rx="1.5" fill="{fill}">'
+                     f'<title>week of {w["contributionDays"][0]["date"]}: {n}</title></rect>')
+        if n > top:
+            b.append(t(x + bw / 2, base - hmax - 6, str(n), 11, c["muted"], 500, "middle", MONO))
         first = date.fromisoformat(w["contributionDays"][0]["date"])
-        if first.month != last_month and wi < len(weeks) - 2:
-            if last_month is not None or first.day <= 7:
-                b.append(t(x, y0 - 10, f"{first:%b}", 12, c["faint"], 500, font=MONO))
+        if first.month != last_month:
+            if last_month is not None:
+                b.append(t(x, base + 22, f"{first:%b}", 12, c["faint"], 500, font=MONO))
             last_month = first.month
-        for d in w["contributionDays"]:
-            wd = (date.fromisoformat(d["date"]).weekday() + 1) % 7  # Sunday first, like GitHub
-            n = d["contributionCount"]
-            b.append(f'<rect x="{x:.1f}" y="{y0 + wd * (cell + gap)}" width="{cell}" height="{cell}" rx="3" '
-                     f'fill="{lv[level(n, th)]}"><title>{d["date"]}: {n}</title></rect>')
-
-    ly = y0 + 7 * (cell + gap) + 22
-    b.append(t(56, ly + 11, "Private work shows as counts only · rendered daily by GitHub Actions", 13, c["faint"]))
-    lx = 1144 - 5 * (cell + gap) - 40
-    b.append(t(lx - 8, ly + 11, "less", 12, c["faint"], 500, "end", MONO))
-    for k in range(5):
-        b.append(f'<rect x="{lx + k * (cell + gap)}" y="{ly}" width="{cell}" height="{cell}" rx="3" fill="{lv[k]}"/>')
-    b.append(t(lx + 5 * (cell + gap) + 4, ly + 11, "more", 12, c["faint"], 500, font=MONO))
+    b.append(hline(x0, x1, base, c))
+    b.append(t(40, 188, "contributions per week · private work is counted, not shown", 12, c["faint"], 500, font=MONO))
     return svg(W, H, "".join(b), f"{cal['totalContributions']} contributions in the last year, "
                                  f"current streak {current} days, longest {longest} days")
 

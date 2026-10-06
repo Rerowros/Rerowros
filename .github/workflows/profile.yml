@@ -31,14 +31,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOGIN: ${{ github.repository_owner }}
 
-      - name: Contribution snake
-        uses: Platane/snk/svg-only@v3
-        with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/snake-dark.svg?palette=github-dark&color_snake=#e81cff&color_dots=#161b22,#22306b,#2f6bff,#8b3dff,#e81cff
-            dist/snake-light.svg?color_snake=#8b3dff&color_dots=#ebedf0,#c7d4ff,#2f6bff,#8b3dff,#e81cff
-
       - name: Publish to the output branch
         uses: crazy-max/ghaction-github-pages@v5
         with:

@@ -4,24 +4,17 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parent.parent / "assets"
 
-SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif"
-MONO = "ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace"
+SANS = "Geist,Inter,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif"
+MONO = "'Geist Mono',ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace"
 
+# Monochrome, Vercel-like: one ink colour, greys for everything else, red/green only where they carry meaning.
 THEMES = {
-    "dark": dict(card="#0d1117", panel="#161b22", border="#30363d", text="#e6edf3", muted="#9198a1",
-                 faint="#6e7681", grid="#21262d", ok="#3fb950", okbg="#12261e", bad="#f85149",
-                 badbg="#2b1416", n1="#484f58", dot="#21262d"),
-    "light": dict(card="#ffffff", panel="#f6f8fa", border="#d0d7de", text="#1f2328", muted="#59636e",
-                  faint="#818b98", grid="#e5e8eb", ok="#1a7f37", okbg="#dafbe1", bad="#cf222e",
-                  badbg="#ffebe9", n1="#afb8c1", dot="#e5e8eb"),
+    "dark": dict(card="#0a0a0a", panel="#111111", border="#2e2e2e", text="#ededed", muted="#a1a1a1",
+                 faint="#707070", grid="#1c1c1c", weak="#3d3d3d", ok="#4cc38a", bad="#ff6369"),
+    "light": dict(card="#ffffff", panel="#fafafa", border="#e5e5e5", text="#171717", muted="#5c5c5c",
+                  faint="#8f8f8f", grid="#f0f0f0", weak="#d4d4d4", ok="#18794e", bad="#cd2b31"),
 }
-
-GRAD = """<linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
-<stop offset="0" stop-color="#2f6bff"/><stop offset=".55" stop-color="#8b3dff"/><stop offset="1" stop-color="#e81cff"/>
-</linearGradient>
-<linearGradient id="gu" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0">
-<stop offset="0" stop-color="#2f6bff"/><stop offset=".55" stop-color="#8b3dff"/><stop offset="1" stop-color="#e81cff"/>
-</linearGradient>"""
+HAIR = 1.4  # ~1 px once GitHub scales a 1200-wide image down to the README column
 
 
 def t(x, y, s, size=16, fill=None, weight=400, anchor="start", font=SANS, extra=""):
@@ -29,87 +22,172 @@ def t(x, y, s, size=16, fill=None, weight=400, anchor="start", font=SANS, extra=
             f'fill="{fill}" text-anchor="{anchor}" {extra}>{escape(s)}</text>')
 
 
-def svg(w, h, body, title):
+def kick(x, y, s, c, anchor="start", fill=None):
+    return t(x, y, s.upper(), 14, fill or c["faint"], 500, anchor, MONO, 'letter-spacing="1.2"')
+
+
+def svg(w, h, body, title, defs=""):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
             f'role="img" aria-label="{escape(title)}"><title>{escape(title)}</title>'
-            f'<defs>{GRAD}</defs>{body}</svg>\n')
+            f'<defs>{defs}</defs>{body}</svg>\n')
 
 
 def frame(w, h, c):
-    return f'<rect x="1" y="1" width="{w-2}" height="{h-2}" rx="18" fill="{c["card"]}" stroke="{c["border"]}"/>'
+    return (f'<rect x="{HAIR / 2}" y="{HAIR / 2}" width="{w - HAIR}" height="{h - HAIR}" rx="14" '
+            f'fill="{c["card"]}" stroke="{c["border"]}" stroke-width="{HAIR}"/>')
+
+
+def hline(x1, x2, y, c, color=None):
+    return f'<line x1="{x1}" y1="{y}" x2="{x2}" y2="{y}" stroke="{color or c["border"]}" stroke-width="{HAIR}"/>'
+
+
+def vline(x, y1, y2, c, color=None):
+    return f'<line x1="{x}" y1="{y1}" x2="{x}" y2="{y2}" stroke="{color or c["border"]}" stroke-width="{HAIR}"/>'
+
+
+def title_block(c, title, subtitle):
+    return t(40, 58, title, 28, c["text"], 600, extra='letter-spacing="-0.6"') + t(40, 88, subtitle, 17, c["muted"])
 
 
 # ---------------------------------------------------------------- header
-def icon(kind, x, y, c):
-    s = c["text"]
+def header(c):
+    W, H = 1200, 270
+    defs = (f'<pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">'
+            f'<path d="M48,0 V48 M0,48 H48" fill="none" stroke="{c["grid"]}" stroke-width="{HAIR}"/></pattern>'
+            '<linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">'
+            '<stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="1"/>'
+            '</linearGradient><mask id="m"><rect width="1200" height="270" fill="url(#fade)"/></mask>')
+    b = [frame(W, H, c), f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="14" fill="url(#grid)" mask="url(#m)"/>']
+    b.append(kick(56, 70, "Rerowros", c))
+    b.append(t(54, 136, "Iaroslav", 64, c["text"], 600, extra='letter-spacing="-2.4"'))
+    b.append(t(56, 182, "I build BPN — a VPN service with its own Android and", 20, c["muted"]))
+    b.append(t(56, 210, "Windows apps and a patched mihomo core under them.", 20, c["muted"]))
+
+    x0, x1, y = 700, 1144, 56
+    rows = [("focus", "VPN clients, proxy cores, networking"), ("languages", "Rust · Kotlin · Go · Python · TypeScript"),
+            ("shipping", "Android · Windows · Telegram bot"), ("based in", "Georgia · UTC+4")]
+    b.append(f'<rect x="{x0}" y="{y}" width="{x1 - x0}" height="{len(rows) * 40}" rx="10" fill="{c["card"]}" '
+             f'stroke="{c["border"]}" stroke-width="{HAIR}"/>')
+    for i, (k, v) in enumerate(rows):
+        yy = y + i * 40
+        if i:
+            b.append(hline(x0, x1, yy, c))
+        b.append(t(x0 + 20, yy + 26, k, 14, c["faint"], 500, font=MONO))
+        b.append(t(x0 + 128, yy + 26, v, 15, c["text"], 500))
+    return svg(W, H, "".join(b), "Iaroslav · Rerowros — I build BPN, a VPN service with Android and Windows apps", defs)
+
+
+# ---------------------------------------------------------------- glyphs
+def glyph(kind, c, sw=3):
+    """Line icons drawn around (0, 0), roughly 56 px across."""
+    st = f'fill="none" stroke="{c["text"]}" stroke-width="{sw}" stroke-linecap="round" stroke-linejoin="round"'
+    dot = c["text"]
     if kind == "phone":
-        return (f'<rect x="{x-7}" y="{y-11}" width="14" height="22" rx="3" fill="none" stroke="{s}" stroke-width="1.8"/>'
-                f'<line x1="{x-2}" y1="{y+7}" x2="{x+2}" y2="{y+7}" stroke="{s}" stroke-width="1.8" stroke-linecap="round"/>')
+        return f'<rect x="-14" y="-23" width="28" height="46" rx="6" {st}/><line x1="-4" y1="15" x2="4" y2="15" {st}/>'
     if kind == "laptop":
-        return (f'<rect x="{x-10}" y="{y-9}" width="20" height="13" rx="2" fill="none" stroke="{s}" stroke-width="1.8"/>'
-                f'<line x1="{x-13}" y1="{y+8}" x2="{x+13}" y2="{y+8}" stroke="{s}" stroke-width="1.8" stroke-linecap="round"/>')
-    if kind == "server":
-        return (f'<rect x="{x-10}" y="{y-10}" width="20" height="8" rx="2" fill="none" stroke="{s}" stroke-width="1.8"/>'
-                f'<rect x="{x-10}" y="{y+2}" width="20" height="8" rx="2" fill="none" stroke="{s}" stroke-width="1.8"/>'
-                f'<circle cx="{x+5}" cy="{y-6}" r="1.3" fill="{s}"/><circle cx="{x+5}" cy="{y+6}" r="1.3" fill="{s}"/>')
+        return f'<rect x="-22" y="-17" width="44" height="28" rx="3" {st}/><line x1="-28" y1="18" x2="28" y2="18" {st}/>'
+    if kind == "stack":
+        return "".join(f'<rect x="-22" y="{-22 + k * 16}" width="44" height="11" rx="3" {st}/>'
+                       f'<circle cx="13" cy="{-16.5 + k * 16}" r="1.6" fill="{dot}"/>' for k in range(3))
+    if kind == "fork":
+        return (f'<circle cx="-12" cy="-17" r="5" {st}/><circle cx="-12" cy="17" r="5" {st}/><circle cx="13" cy="-17" r="5" {st}/>'
+                f'<line x1="-12" y1="-12" x2="-12" y2="12" {st}/><path d="M13,-12 C13,2 -12,-2 -12,10" {st}/>')
+    if kind == "pr":
+        return (f'<circle cx="-13" cy="-17" r="5" {st}/><circle cx="-13" cy="17" r="5" {st}/><circle cx="13" cy="17" r="5" {st}/>'
+                f'<line x1="-13" y1="-12" x2="-13" y2="12" {st}/><path d="M13,12 V-8 Q13,-17 4,-17 H-2" {st}/>'
+                f'<path d="M3,-23 L-3,-17 L3,-11" {st}/>')
+    if kind == "chat":
+        return (f'<path d="M-22,-16 H22 V10 H-6 L-16,20 V10 H-22 Z" {st}/>'
+                + "".join(f'<circle cx="{dx}" cy="-3" r="2.4" fill="{dot}"/>' for dx in (-10, 0, 10)))
+    if kind == "panel":
+        return (f'<rect x="-24" y="-20" width="48" height="40" rx="5" {st}/><line x1="-24" y1="-9" x2="24" y2="-9" {st}/>'
+                f'<line x1="-13" y1="12" x2="-13" y2="4" {st}/><line x1="0" y1="12" x2="0" y2="-1" {st}/>'
+                f'<line x1="13" y1="12" x2="13" y2="7" {st}/>')
     if kind == "globe":
-        return (f'<circle cx="{x}" cy="{y}" r="11" fill="none" stroke="{s}" stroke-width="1.8"/>'
-                f'<ellipse cx="{x}" cy="{y}" rx="5" ry="11" fill="none" stroke="{s}" stroke-width="1.5"/>'
-                f'<line x1="{x-11}" y1="{y}" x2="{x+11}" y2="{y}" stroke="{s}" stroke-width="1.5"/>')
+        return (f'<circle cx="0" cy="0" r="18" {st}/><ellipse cx="0" cy="0" rx="8" ry="18" {st}/>'
+                f'<line x1="-18" y1="0" x2="18" y2="0" {st}/>')
     raise ValueError(kind)
 
 
-def header(c):
-    W, H = 1200, 340
+# ---------------------------------------------------------------- section banners
+def banner(kind, kicker, title, subtitle, stats, c, link=True):
+    W, H = 1200, 136
     b = [frame(W, H, c)]
-    b.append(f'<defs><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">'
-             f'<circle cx="2" cy="2" r="1.2" fill="{c["dot"]}"/></pattern></defs>')
-    b.append(f'<rect x="680" y="20" width="500" height="200" fill="url(#dots)"/>')
-    b.append(t(56, 66, "@Rerowros", 18, "url(#g)", 600, font=MONO))
-    b.append(t(56, 126, "Iaroslav", 60, c["text"], 700))
-    b.append(t(56, 168, "Censorship-resistant networking", 25, c["muted"]))
-    b.append(t(56, 202, "Android & desktop VPN clients · Telegram & AI tools", 25, c["muted"]))
+    b.append(f'<rect x="32" y="32" width="72" height="72" rx="14" fill="{c["panel"]}" stroke="{c["border"]}" stroke-width="{HAIR}"/>')
+    b.append(f'<g transform="translate(68 68) scale(.62)">{glyph(kind, c, 2.6)}</g>')
+    b.append(kick(132, 46, kicker, c))
+    b.append(t(130, 84, title, 30, c["text"], 600, extra='letter-spacing="-0.6"'))
+    b.append(t(132, 112, subtitle, 18, c["muted"]))
+    b.append(vline(690, 0, H, c))
+    for k, (num, lab) in enumerate(stats):
+        x = 690 + k * 170
+        if k:
+            b.append(vline(x, 0, H, c))
+        b.append(t(x + 24, 66, num, 30 if len(num) <= 6 else 26, c["text"], 600, extra='letter-spacing="-0.6"'))
+        for j, line in enumerate(lab.split("\n")):
+            b.append(t(x + 24, 92 + j * 20, line, 15, c["muted"]))
+    if link:
+        b.append(t(1176, 30, "↗", 16, c["faint"], 500, "end", MONO))
+    return svg(W, H, "".join(b), f"{title} — {subtitle}")
 
-    # network path: clients -> DPI -> front -> exit -> internet
-    pa = "M740,82 C805,82 815,130 875,130 L1005,130 L1125,130"
-    pb = "M740,178 C805,178 815,130 875,130 L1005,130 L1125,130"
-    for p in (pa, pb):
-        b.append(f'<path d="{p}" fill="none" stroke="url(#gu)" stroke-width="2.5" stroke-linecap="round"/>')
-    b.append(f'<line x1="808" y1="50" x2="808" y2="208" stroke="{c["bad"]}" stroke-width="2" '
-             f'stroke-dasharray="5 6" opacity=".75"/>')
-    b.append(t(808, 42, "DPI", 13, c["bad"], 700, "middle", MONO))
-    b.append(f'<path id="pa" d="{pa}" fill="none"/><path id="pb" d="{pb}" fill="none"/>')
-    for pid, begin in (("pa", "0s"), ("pb", "1.4s"), ("pa", "2.1s")):
-        b.append(f'<circle r="4.5" fill="#e81cff"><animateMotion dur="2.8s" begin="{begin}" '
-                 f'repeatCount="indefinite"><mpath href="#{pid}"/></animateMotion></circle>')
-    nodes = [(740, 82, "phone", "Android"), (740, 178, "laptop", "Windows"),
-             (875, 130, "server", "front"), (1005, 130, "server", "exit"), (1125, 130, "globe", "internet")]
-    for x, y, kind, label in nodes:
-        b.append(f'<circle cx="{x}" cy="{y}" r="25" fill="{c["panel"]}" stroke="url(#g)" stroke-width="2"/>')
-        b.append(icon(kind, x, y, c))
-        ly = y + 44 if label not in ("Android",) else y - 34
-        b.append(t(x, ly, label, 13, c["muted"], 500, "middle", MONO))
 
-    b.append(f'<line x1="56" y1="232" x2="1144" y2="232" stroke="{c["border"]}"/>')
-    stats = [("~190k", "lines in my VPN product"), ("2", "VPN apps: Android, Windows"),
-             ("30", "merged PRs in ClashFest"), ("5", "patches on mihomo core")]
-    for i, (num, label) in enumerate(stats):
-        x = 56 + i * 275
-        b.append(t(x, 282, num, 36, "url(#g)", 700))
-        b.append(t(x, 310, label, 17, c["muted"]))
-    return svg(W, H, "".join(b), "Iaroslav · Rerowros — censorship-resistant networking, VPN clients, Telegram and AI tools")
+BANNERS = {
+    "android": ("phone", {
+        "en": ("Android app", "BadVPN for Android", "VPN client on my mihomo fork, Android 6+",
+               [("0.85 s", "tap → first\nrequest via VPN"), ("0.2 s", "cold start\nto home screen"),
+                ("1 key", "every APK signed,\nSHA-256 published")]),
+        "ru": ("Android-приложение", "BadVPN для Android", "VPN-клиент на моём форке mihomo",
+               [("0.85 с", "от нажатия до\nпервого запроса"), ("0.2 с", "холодный старт\nдо главной"),
+                ("1 ключ", "все APK подписаны,\nSHA-256 в релизе")]),
+    }),
+    "windows": ("laptop", {
+        "en": ("Windows app", "BPN for Windows", "Tauri UI + privileged Rust service",
+               [("25k", "lines of Rust"), ("158", "tests"), ("3", "components\nchecked by hash")]),
+        "ru": ("Приложение для Windows", "BPN для Windows", "Tauri + привилегированный сервис на Rust",
+               [("25k", "строк Rust"), ("158", "тестов"), ("3", "компонента\nсверяются по хешу")]),
+    }),
+    "product": ("stack", {
+        "en": ("The product · private", "BPN / BadVPN", "Bot, backend, panel, nodes, two apps",
+               [("~190k", "lines of code"), ("1.8k", "commits"), ("160+", "test files")]),
+        "ru": ("Сам продукт · приватный", "BPN / BadVPN", "Бот, бэкенд, панель, ноды, два приложения",
+               [("~190k", "строк кода"), ("1.8k", "коммитов"), ("160+", "тестовых файлов")]),
+    }),
+    "mihomo": ("fork", {
+        "en": ("Proxy core · fork", "Rerowros/mihomo", "Upstream tag + 5 patches, rebased per release",
+               [("×5–8", "faster XHTTP\nupload"), ("3 / 3", "Xray versions\nconnect"), ("5", "patches with\ninterop tests")]),
+        "ru": ("Ядро · форк", "Rerowros/mihomo", "Тег upstream + 5 патчей, ребейз на релиз",
+               [("×5–8", "быстрее отправка\nпо XHTTP"), ("3 / 3", "версии Xray\nподключаются"), ("5", "патчей с\ninterop-тестами")]),
+    }),
+    "clashfest": ("pr", {
+        "en": ("Open source · core contributor", "Nemu-x/ClashFest", "Android client on mihomo · 222★",
+               [("30", "merged PRs"), ("+19.6k", "lines"), ("~15%", "of the codebase")]),
+        "ru": ("Open source · core contributor", "Nemu-x/ClashFest", "Android-клиент на mihomo · 222★",
+               [("30", "смёрженных PR"), ("+19.6k", "строк"), ("~15%", "текущего кода")]),
+    }),
+    "tg-recall": ("chat", {
+        "en": ("Project · Python · MCP", "tg-recall", "Local-first Telegram archive for AI agents",
+               [("300+", "tests"), ("15k", "lines of Python"), ("2 OS", "CI on Windows\nand Linux")]),
+        "ru": ("Проект · Python · MCP", "tg-recall", "Локальный архив Telegram для AI-агентов",
+               [("300+", "тестов"), ("15k", "строк Python"), ("2 ОС", "CI на Windows\nи Linux")]),
+    }),
+    "pasarguard": ("panel", {
+        "en": ("Open source · contributor", "PasarGuard", "VPN panel + node · 2.6k★",
+               [("4", "merged PRs"), ("4", "in review"), ("3", "repos: panel,\nnode, scripts")]),
+        "ru": ("Open source · контрибьютор", "PasarGuard", "VPN-панель + нода · 2.6k★",
+               [("4", "смёржено"), ("4", "на ревью"), ("3", "репо: panel,\nnode, scripts")]),
+    }),
+}
 
 
 # ---------------------------------------------------------------- architecture
 def box(x, y, w, h, title, lines, c, hl=False, sub=None):
-    stroke = 'url(#g)' if hl else c["border"]
-    sw = 2 if hl else 1
-    out = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="14" fill="{c["panel"]}" stroke="{stroke}" stroke-width="{sw}"/>',
-           t(x + 20, y + 36, title, 20, c["text"], 650)]
-    yy = y + 58
+    out = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="10" fill="{c["panel"]}" '
+           f'stroke="{c["text"] if hl else c["border"]}" stroke-width="{HAIR}"/>',
+           t(x + 20, y + 36, title, 20, c["text"], 600, extra='letter-spacing="-0.3"')]
+    yy = y + 60
     if sub:
-        out.append(t(x + 20, yy, sub, 15, c["muted"], 500, font=MONO))
-        yy += 26
+        out.append(t(x + 20, yy, sub, 14, c["faint"], 500, font=MONO))
+        yy += 28
     for ln in lines:
         indent = ln.startswith("  ")
         out.append(t(x + (34 if indent else 20), yy, ln.strip(), 16, c["faint"] if indent else c["muted"]))
@@ -118,287 +196,148 @@ def box(x, y, w, h, title, lines, c, hl=False, sub=None):
 
 
 def arrow_defs(c):
-    return (f'<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
-            f'<path d="M0,0 L10,5 L0,10 z" fill="{c["muted"]}"/></marker>'
-            f'<marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
-            f'<path d="M0,0 L10,5 L0,10 z" fill="#c13bff"/></marker></defs>')
+    return (f'<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
+            f'<path d="M0,0 L10,5 L0,10 z" fill="{c["faint"]}"/></marker>'
+            f'<marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
+            f'<path d="M0,0 L10,5 L0,10 z" fill="{c["text"]}"/></marker>')
 
 
 def label(x, y, s, c, anchor="middle"):
-    return t(x, y, s, 14, c["faint"], 500, anchor, MONO)
+    return t(x, y, s, 13, c["faint"], 500, anchor, MONO)
+
+
+def arrow(x1, y1, x2, y2, c, dashed=False, strong=False):
+    dash = ' stroke-dasharray="5 5"' if dashed else ""
+    return (f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{c["text"] if strong else c["faint"]}" '
+            f'stroke-width="{HAIR + (0.6 if strong else 0)}"{dash} marker-end="url(#{"ahs" if strong else "ah"})"/>')
 
 
 def architecture(c):
     W, H = 1200, 600
-    b = [frame(W, H, c), arrow_defs(c)]
-    b.append(t(40, 56, "How BPN fits together", 26, c["text"], 700))
-    b.append(t(40, 84, "My VPN product, end to end · private code, ~190k lines, 1.8k commits", 16, c["muted"]))
-
-    # packet flow sits under the boxes, so the moving dot only shows between them
-    b.append('<path id="flow" d="M185,520 L1055,520" fill="none"/>')
-    for x1, x2 in ((330, 406), (640, 676), (910, 946)):
-        b.append(f'<line x1="{x1}" y1="520" x2="{x2}" y2="520" stroke="url(#gu)" stroke-width="2.5" marker-end="url(#ahg)"/>')
-    b.append('<circle r="5" fill="#e81cff"><animateMotion dur="3.2s" repeatCount="indefinite">'
-             '<mpath href="#flow"/></animateMotion></circle>')
-
+    b = [frame(W, H, c), title_block(c, "How BPN fits together", "Private code · ~190k lines · 1.8k commits")]
     b.append(box(40, 116, 290, 200, "Telegram bot · Mini App", [
         "sign-up, plans, payments", "support, referrals", "several brands, one backend"], c, sub="Python · aiogram"))
     b.append(box(410, 116, 400, 200, "Backend", [
         "• traffic ledger with rollover", "  shadow-validated, staged rollout",
         "• payments reconciled, not webhook-trusted", "• idempotent admin actions via outbox"], c,
         sub="Next.js · Prisma · PostgreSQL"))
-    b.append(box(890, 116, 270, 200, "VPN panel", [
-        "users, limits, traffic", "node configs, rollout"], c, sub="Xray · REALITY · XHTTP"))
+    b.append(box(890, 116, 270, 200, "VPN panel", ["users, limits, traffic", "node configs, rollout"], c,
+                 sub="Xray · REALITY · XHTTP"))
+    b.append(arrow(330, 196, 406, 196, c) + label(368, 184, "orders", c))
+    b.append(arrow(810, 196, 886, 196, c) + label(848, 184, "users", c))
+    b.append(arrow(886, 240, 814, 240, c) + label(848, 262, "traffic", c))
 
-    b.append(f'<line x1="330" y1="196" x2="406" y2="196" stroke="{c["muted"]}" stroke-width="1.6" marker-end="url(#ah)"/>')
-    b.append(label(368, 184, "orders", c))
-    b.append(f'<line x1="810" y1="196" x2="886" y2="196" stroke="{c["muted"]}" stroke-width="1.6" marker-end="url(#ah)"/>')
-    b.append(label(848, 184, "users", c))
-    b.append(f'<line x1="886" y1="240" x2="814" y2="240" stroke="{c["muted"]}" stroke-width="1.6" marker-end="url(#ah)"/>')
-    b.append(label(848, 262, "traffic", c))
-
-    # subscription: backend -> clients
-    b.append(f'<path d="M470,316 V376 H185 V424" fill="none" stroke="{c["muted"]}" stroke-width="1.6" '
-             f'stroke-dasharray="6 5" marker-end="url(#ah)"/>')
+    b.append(f'<path d="M470,316 V376 H185 V424" fill="none" stroke="{c["faint"]}" stroke-width="{HAIR}" '
+             f'stroke-dasharray="5 5" marker-end="url(#ah)"/>')
     b.append(label(330, 368, "subscription link", c))
-    # panel -> nodes
-    b.append(f'<path d="M1025,316 V376 H525" fill="none" stroke="{c["muted"]}" stroke-width="1.6" stroke-dasharray="6 5"/>')
+    b.append(f'<path d="M1025,316 V376 H525" fill="none" stroke="{c["faint"]}" stroke-width="{HAIR}" stroke-dasharray="5 5"/>')
     for x in (525, 795):
-        b.append(f'<line x1="{x}" y1="376" x2="{x}" y2="424" stroke="{c["muted"]}" stroke-width="1.6" '
-                 f'stroke-dasharray="6 5" marker-end="url(#ah)"/>')
+        b.append(arrow(x, 376, x, 424, c, dashed=True))
     b.append(label(1015, 368, "node configs", c, "end"))
 
-    b.append(box(40, 428, 290, 140, "Clients", [
-        "Windows · Tauri + Rust", "Android · Kotlin"], c, hl=True, sub="core: mihomo, my fork"))
+    b.append(box(40, 428, 290, 140, "Clients", ["Windows · Tauri + Rust", "Android · Kotlin"], c, hl=True,
+                 sub="core: mihomo, my fork"))
     b.append(box(410, 428, 230, 140, "Front node", ["entry point for mobile", "networks on whitelists"], c))
     b.append(box(680, 428, 230, 140, "Exit node", ["abroad, clean IP", "for the traffic"], c))
-    b.append(f'<rect x="950" y="428" width="210" height="140" rx="14" fill="{c["card"]}" stroke="{c["border"]}" stroke-dasharray="4 5"/>')
-    b.append(icon("globe", 1055, 484, c))
-    b.append(t(1055, 532, "Internet", 20, c["text"], 650, "middle"))
-    return svg(W, H, "".join(b), "How BPN fits together: Telegram bot, backend, VPN panel, clients, front and exit nodes")
+    b.append(f'<rect x="950" y="428" width="210" height="140" rx="10" fill="none" stroke="{c["border"]}" '
+             f'stroke-width="{HAIR}" stroke-dasharray="4 5"/>')
+    b.append(f'<g transform="translate(1055 480) scale(.8)">{glyph("globe", c, 2.4)}</g>')
+    b.append(t(1055, 534, "Internet", 20, c["text"], 600, "middle"))
+    for x1, x2 in ((330, 406), (640, 676), (910, 946)):
+        b.append(arrow(x1, 498, x2, 498, c, strong=True))
+    return svg(W, H, "".join(b), "How BPN fits together: Telegram bot, backend, VPN panel, clients, front and exit nodes",
+               arrow_defs(c))
 
 
 # ---------------------------------------------------------------- REALITY matrix
 def reality(c):
-    W, H = 1200, 430
-    b = [frame(W, H, c)]
-    b.append(t(40, 56, "REALITY that still connects to current Xray", 26, c["text"], 700))
-    b.append(t(40, 84, "mihomo client ↔ real Xray REALITY server on 127.0.0.1 · VLESS over TCP · interop test in the fork",
-               16, c["muted"]))
+    W, H = 1200, 400
+    b = [frame(W, H, c), title_block(c, "REALITY that still connects to current Xray",
+                                     "mihomo client ↔ real Xray REALITY server on 127.0.0.1 · VLESS over TCP · interop test in the fork")]
     cols = ["Xray 26.3.27", "Xray 26.7.28", "Xray 26.9.9"]
-    cx0, cw, ch = 640, 170, 44
+    cx0, cw, rh, top = 660, 170, 52, 128
+    b.append(hline(40, 1160, top + 14, c))
     for i, col in enumerate(cols):
-        b.append(t(cx0 + i * (cw + 10) + cw / 2, 128, col, 14, c["muted"], 600, "middle", MONO))
-    rows = [
-        ("upstream mihomo · chrome", "", "ynn", False),
-        ("upstream mihomo · firefox", "ML-KEM on", "ynn", False),
-        ("upstream mihomo · no fingerprint", "", "nnn", False),
-        ("my fork · chrome / firefox / safari", "ML-KEM on", "yyy", True),
-    ]
-    y = 146
-    for name, note, res, hl in rows:
+        b.append(t(cx0 + i * cw + cw / 2, top, col, 14, c["faint"], 500, "middle", MONO))
+    rows = [("upstream mihomo · chrome", "", "ynn", False),
+            ("upstream mihomo · firefox", "ML-KEM on", "ynn", False),
+            ("upstream mihomo · no fingerprint", "", "nnn", False),
+            ("my fork · chrome / firefox / safari", "ML-KEM on", "yyy", True)]
+    for r, (name, note, res, hl) in enumerate(rows):
+        y = top + 14 + r * rh
         if hl:
-            b.append(f'<rect x="28" y="{y - 6}" width="1144" height="{ch + 12}" rx="12" fill="none" stroke="url(#g)" stroke-width="2"/>')
-        b.append(t(48, y + 28, name, 16, c["text"], 650 if hl else 500))
+            b.append(f'<rect x="40" y="{y}" width="1120" height="{rh}" fill="{c["panel"]}"/>')
+        b.append(t(56, y + 33, name, 17, c["text"], 600 if hl else 400))
         if note:
-            b.append(t(400, y + 28, note, 14, c["faint"], 500, font=MONO))
-        for i, r in enumerate(res):
-            x = cx0 + i * (cw + 10)
-            okk = r == "y"
-            b.append(f'<rect x="{x}" y="{y}" width="{cw}" height="{ch}" rx="9" fill="{c["okbg"] if okk else c["badbg"]}"/>')
-            b.append(t(x + cw / 2, y + 28, "✓ connects" if okk else "✕ fails", 15, c["ok"] if okk else c["bad"], 600, "middle"))
-        y += ch + 16
-    b.append(t(40, 404, "Patches: current Xray client version in the session ID, Firefox 148 / Safari 26.3 uTLS fingerprints, "
-                        "opt-in X25519MLKEM768", 15, c["faint"]))
+            b.append(t(410, y + 33, note, 13, c["faint"], 500, font=MONO))
+        for i, ch in enumerate(res):
+            ok = ch == "y"
+            b.append(t(cx0 + i * cw + cw / 2, y + 33, "✓ connects" if ok else "✕ fails", 16,
+                       c["ok"] if ok else c["bad"], 500, "middle"))
+        b.append(hline(40, 1160, y + rh, c))
+    b.append(t(40, 376, "Patches: current Xray client version in the session ID, Firefox 148 / Safari 26.3 uTLS "
+                        "fingerprints, opt-in X25519MLKEM768", 14, c["faint"]))
     return svg(W, H, "".join(b), "REALITY compatibility: upstream mihomo vs my fork across Xray versions")
 
 
 # ---------------------------------------------------------------- XHTTP upload chart
 def xhttp(c):
-    W, H = 1200, 490
-    b = [frame(W, H, c)]
-    b.append(t(40, 56, "Parallel XHTTP uploads: 5–8× faster upload", 26, c["text"], 700))
-    b.append(t(40, 84, "Upload, Mbit/s · 150 ms RTT · mihomo ↔ real Xray 26.3.27 · packet-up mode, used for CDN-fronted lines",
-               16, c["muted"]))
-    # legend
-    b.append(f'<rect x="40" y="106" width="14" height="14" rx="3" fill="{c["n1"]}"/>')
-    b.append(t(62, 118, "upstream: 1 request in flight", 14, c["muted"]))
-    b.append(f'<rect x="300" y="106" width="14" height="14" rx="3" fill="url(#g)"/>')
-    b.append(t(322, 118, "my fork: up to 8 in flight, Xray-style pipelining", 14, c["muted"]))
-
-    x0, scale, top = 300, 50.0, 150
+    W, H = 1200, 470
+    b = [frame(W, H, c), title_block(c, "Parallel XHTTP uploads: 5–8× faster upload",
+                                     "Upload, Mbit/s · 150 ms RTT · mihomo ↔ real Xray 26.3.27 · packet-up, used for CDN-fronted lines")]
+    b.append(f'<rect x="40" y="114" width="12" height="12" rx="2" fill="{c["weak"]}"/>')
+    b.append(t(60, 125, "upstream: 1 request in flight", 14, c["muted"]))
+    b.append(f'<rect x="300" y="114" width="12" height="12" rx="2" fill="{c["text"]}"/>')
+    b.append(t(320, 125, "my fork: up to 8 in flight, Xray-style pipelining", 14, c["muted"]))
+    x0, scale, top = 300, 50.0, 156
     for v in (0, 5, 10, 15):
         x = x0 + v * scale
-        b.append(f'<line x1="{x}" y1="{top}" x2="{x}" y2="{top + 4 * 66 - 6}" stroke="{c["grid"]}"/>')
-        b.append(t(x, top + 4 * 66 + 14, str(v), 12, c["faint"], 500, "middle", MONO))
+        b.append(vline(x, top - 6, top + 4 * 64 - 8, c, c["grid"]))
+        b.append(t(x, top + 4 * 64 + 12, str(v), 12, c["faint"], 500, "middle", MONO))
     rows = [("POST · HTTP/2", 2.3, 12.3), ("GET + headers · HTTP/2", 1.8, 12.9),
             ("POST · HTTP/1.1", 1.8, 13.8), ("GET + headers · HTTP/1.1", 2.4, 11.5)]
-    for i, (name, a, bb) in enumerate(rows):
-        y = top + i * 66 + 6
-        b.append(t(x0 - 20, y + 25, name, 15, c["text"], 500, "end"))
-        b.append(f'<rect x="{x0}" y="{y}" width="{a * scale:.1f}" height="17" rx="4" fill="{c["n1"]}"/>')
-        b.append(t(x0 + a * scale + 8, y + 13, f"{a}", 13, c["muted"], 600, font=MONO))
-        b.append(f'<rect x="{x0}" y="{y + 22}" width="{bb * scale:.1f}" height="17" rx="4" fill="url(#gu)"/>')
-        b.append(t(x0 + bb * scale + 8, y + 35, f"{bb}", 13, c["text"], 700, font=MONO))
-        b.append(t(1150, y + 31, f"×{bb / a:.1f}", 26, "url(#g)", 700, "end"))
-    b.append(t(40, 468, "16 MiB transfers sha256-checked both ways on Xray 26.3.27, 26.7.28 and 26.9.9 · "
-                        "upstream ceiling ≈ request size / RTT", 15, c["faint"]))
+    for i, (name, a, n8) in enumerate(rows):
+        y = top + i * 64
+        b.append(t(x0 - 20, y + 25, name, 15, c["text"], 400, "end"))
+        b.append(f'<rect x="{x0}" y="{y}" width="{a * scale:.1f}" height="16" rx="2" fill="{c["weak"]}"/>')
+        b.append(t(x0 + a * scale + 8, y + 13, f"{a}", 13, c["faint"], 500, font=MONO))
+        b.append(f'<rect x="{x0}" y="{y + 21}" width="{n8 * scale:.1f}" height="16" rx="2" fill="{c["text"]}"/>')
+        b.append(t(x0 + n8 * scale + 8, y + 34, f"{n8}", 13, c["text"], 600, font=MONO))
+        b.append(t(1160, y + 30, f"×{n8 / a:.1f}", 24, c["text"], 600, "end", extra='letter-spacing="-0.5"'))
+    b.append(t(40, 448, "16 MiB transfers sha256-checked both ways on Xray 26.3.27, 26.7.28 and 26.9.9 · "
+                        "upstream ceiling ≈ request size / RTT", 14, c["faint"]))
     return svg(W, H, "".join(b), "XHTTP packet-up upload throughput: upstream mihomo vs my fork")
 
 
 # ---------------------------------------------------------------- Android: tap to first request
 def android_connect(c):
     W, H = 1200, 400
-    b = [frame(W, H, c)]
-    b.append(t(40, 56, "Tap “connect” → first request through the VPN", 26, c["text"], 700))
-    b.append(t(40, 84, "Seconds, lower is better · realme RMX8899, Android 16, Wi-Fi · measured over adb", 16, c["muted"]))
-    rows = [("BadVPN 1.1.5", 0.85, "median of 5", "url(#gu)", 1),
-            ("BadVPN 1.1.4", 1.35, "3 runs", "url(#gu)", .45),
-            ("ClashFest", 1.56, "3 runs", c["n1"], 1),
-            ("INCY 3.7.0", 1.56, "3 runs", c["n1"], 1)]
-    x0, scale, top = 260, 460.0, 120
+    b = [frame(W, H, c), title_block(c, "Tap “connect” → first request through the VPN",
+                                     "Seconds, lower is better · realme RMX8899, Android 16, Wi-Fi · measured over adb")]
+    rows = [("BadVPN 1.1.5", 0.85, "median of 5", c["text"]), ("BadVPN 1.1.4", 1.35, "3 runs", c["muted"]),
+            ("ClashFest", 1.56, "3 runs", c["weak"]), ("INCY 3.7.0", 1.56, "3 runs", c["weak"])]
+    x0, scale, top = 260, 460.0, 124
     for v in (0, 0.5, 1.0, 1.5):
         x = x0 + v * scale
-        b.append(f'<line x1="{x}" y1="{top - 6}" x2="{x}" y2="{top + 4 * 50}" stroke="{c["grid"]}"/>')
+        b.append(vline(x, top - 6, top + 4 * 50, c, c["grid"]))
         b.append(t(x, top + 4 * 50 + 18, f"{v:g} s", 12, c["faint"], 500, "middle", MONO))
-    for i, (name, v, note, fill, op) in enumerate(rows):
+    for i, (name, v, note, fill) in enumerate(rows):
         y = top + i * 50
-        b.append(t(x0 - 20, y + 22, name, 17, c["text"], 650 if i == 0 else 500, "end"))
-        b.append(f'<rect x="{x0}" y="{y + 4}" width="{v * scale:.1f}" height="26" rx="5" fill="{fill}" opacity="{op}"/>')
-        b.append(t(x0 + v * scale + 10, y + 23, f"{v:.2f} s", 16, c["text"] if i == 0 else c["muted"], 700, font=MONO))
-        b.append(t(x0 + v * scale + 90, y + 23, note, 13, c["faint"], 500, font=MONO))
-    b.append(t(40, 362, "1.1.4 vs ClashFest vs INCY: one rough session on 29.09.2026, 3 runs each, different exit servers.",
+        b.append(t(x0 - 20, y + 23, name, 17, c["text"], 600 if i == 0 else 400, "end"))
+        b.append(f'<rect x="{x0}" y="{y + 6}" width="{v * scale:.1f}" height="24" rx="2" fill="{fill}"/>')
+        b.append(t(x0 + v * scale + 10, y + 24, f"{v:.2f} s", 15, c["text"] if i == 0 else c["muted"], 600, font=MONO))
+        b.append(t(x0 + v * scale + 88, y + 24, note, 13, c["faint"], 500, font=MONO))
+    b.append(t(40, 360, "1.1.4 vs ClashFest vs INCY: one rough session on 29.09.2026, 3 runs each, different exit servers.",
                14, c["faint"]))
-    b.append(t(40, 384, "1.1.5 (no 500 ms wait, no second config pass): separate session, 5 runs vs 1.1.4 median 1.41 s.",
+    b.append(t(40, 382, "1.1.5 (no 500 ms wait, no second config pass): separate session, 5 runs vs 1.1.4 median 1.41 s.",
                14, c["faint"]))
     return svg(W, H, "".join(b), "Time from tap to first request through the VPN: BadVPN 1.1.5 0.85 s, ClashFest and INCY 1.56 s")
 
 
-# ---------------------------------------------------------------- section banners
-def glyph(kind, cx, cy, c):
-    st = f'fill="none" stroke="{c["text"]}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'
-    if kind == "phone":
-        return (f'<rect x="{cx-14}" y="{cy-23}" width="28" height="46" rx="6" {st}/>'
-                f'<line x1="{cx-4}" y1="{cy+15}" x2="{cx+4}" y2="{cy+15}" {st}/>')
-    if kind == "laptop":
-        return (f'<rect x="{cx-22}" y="{cy-17}" width="44" height="28" rx="3" {st}/>'
-                f'<line x1="{cx-28}" y1="{cy+18}" x2="{cx+28}" y2="{cy+18}" {st}/>')
-    if kind == "stack":
-        return "".join(f'<rect x="{cx-22}" y="{cy-22+k*16}" width="44" height="11" rx="3" {st}/>'
-                       f'<circle cx="{cx+13}" cy="{cy-16.5+k*16}" r="1.6" fill="{c["text"]}"/>' for k in range(3))
-    if kind == "fork":
-        return (f'<circle cx="{cx-12}" cy="{cy-17}" r="5" {st}/><circle cx="{cx-12}" cy="{cy+17}" r="5" {st}/>'
-                f'<circle cx="{cx+13}" cy="{cy-17}" r="5" {st}/><line x1="{cx-12}" y1="{cy-12}" x2="{cx-12}" y2="{cy+12}" {st}/>'
-                f'<path d="M{cx+13},{cy-12} C{cx+13},{cy+2} {cx-12},{cy-2} {cx-12},{cy+10}" {st}/>')
-    if kind == "pr":
-        return (f'<circle cx="{cx-13}" cy="{cy-17}" r="5" {st}/><circle cx="{cx-13}" cy="{cy+17}" r="5" {st}/>'
-                f'<circle cx="{cx+13}" cy="{cy+17}" r="5" {st}/><line x1="{cx-13}" y1="{cy-12}" x2="{cx-13}" y2="{cy+12}" {st}/>'
-                f'<path d="M{cx+13},{cy+12} V{cy-8} Q{cx+13},{cy-17} {cx+4},{cy-17} H{cx-2}" {st}/>'
-                f'<path d="M{cx+3},{cy-23} L{cx-3},{cy-17} L{cx+3},{cy-11}" {st}/>')
-    if kind == "chat":
-        return (f'<path d="M{cx-22},{cy-16} H{cx+22} V{cy+10} H{cx-6} L{cx-16},{cy+20} V{cy+10} H{cx-22} Z" {st}/>'
-                + "".join(f'<circle cx="{cx+dx}" cy="{cy-3}" r="2.4" fill="{c["text"]}"/>' for dx in (-10, 0, 10)))
-    if kind == "terminal":
-        return (f'<rect x="{cx-24}" y="{cy-19}" width="48" height="38" rx="5" {st}/>'
-                f'<path d="M{cx-14},{cy-6} L{cx-6},{cy+1} L{cx-14},{cy+8}" {st}/>'
-                f'<line x1="{cx-1}" y1="{cy+9}" x2="{cx+12}" y2="{cy+9}" {st}/>')
-    if kind == "book":
-        return (f'<path d="M{cx},{cy-14} C{cx-8},{cy-20} {cx-18},{cy-20} {cx-25},{cy-17} V{cy+17} '
-                f'C{cx-18},{cy+14} {cx-8},{cy+14} {cx},{cy+20} Z" {st}/>'
-                f'<path d="M{cx},{cy-14} C{cx+8},{cy-20} {cx+18},{cy-20} {cx+25},{cy-17} V{cy+17} '
-                f'C{cx+18},{cy+14} {cx+8},{cy+14} {cx},{cy+20}" {st}/>')
-    if kind == "panel":
-        return (f'<rect x="{cx-24}" y="{cy-20}" width="48" height="40" rx="5" {st}/>'
-                f'<line x1="{cx-24}" y1="{cy-9}" x2="{cx+24}" y2="{cy-9}" {st}/>'
-                f'<line x1="{cx-13}" y1="{cy+12}" x2="{cx-13}" y2="{cy+4}" {st}/>'
-                f'<line x1="{cx}" y1="{cy+12}" x2="{cx}" y2="{cy-1}" {st}/>'
-                f'<line x1="{cx+13}" y1="{cy+12}" x2="{cx+13}" y2="{cy+7}" {st}/>')
-    raise ValueError(kind)
-
-
-def banner(kind, kicker, title, subtitle, stats, c, link=True):
-    W, H = 1200, 190
-    b = [frame(W, H, c)]
-    b.append(f'<rect x="1" y="1" width="8" height="{H-2}" rx="4" fill="url(#gu)"/>')
-    b.append(f'<rect x="44" y="47" width="96" height="96" rx="24" fill="{c["panel"]}" stroke="url(#g)" stroke-width="2"/>')
-    b.append(glyph(kind, 92, 95, c))
-    b.append(t(170, 72, kicker, 15, "url(#g)", 700, font=MONO, extra='letter-spacing="1.5"'))
-    b.append(t(170, 114, title, 36, c["text"], 700))
-    b.append(t(170, 148, subtitle, 19, c["muted"]))
-    b.append(f'<line x1="668" y1="40" x2="668" y2="150" stroke="{c["border"]}"/>')
-    for k, (num, lab) in enumerate(stats):
-        x = 700 + k * 165
-        size = 36 if len(num) <= 5 else 30 if len(num) <= 7 else 24
-        b.append(t(x, 102, num, size, "url(#g)", 700))
-        for j, line in enumerate(lab.split("\n")):
-            b.append(t(x, 131 + j * 20, line, 16, c["muted"]))
-    if link:
-        b.append(t(1168, 34, "↗", 18, c["faint"], 600, "end"))
-    return svg(W, H, "".join(b), f"{title} — {subtitle}")
-
-
-BANNERS = {
-    "android": ("phone", {
-        "en": ("ANDROID APP", "BadVPN for Android", "VPN client on my mihomo fork, Android 6+",
-               [("0.85 s", "tap → first request\nthrough the VPN"), ("0.2 s", "cold start\nto home screen"),
-                ("1 key", "every APK signed,\nSHA-256 published")]),
-        "ru": ("ANDROID-ПРИЛОЖЕНИЕ", "BadVPN для Android", "VPN-клиент на моём форке mihomo, Android 6+",
-               [("0.85 с", "от нажатия до\nпервого запроса"), ("0.2 с", "холодный старт\nдо главной"),
-                ("1 ключ", "все APK подписаны,\nSHA-256 в релизе")]),
-    }),
-    "windows": ("laptop", {
-        "en": ("WINDOWS APP", "BPN for Windows", "Tauri UI + privileged Rust service, Mihomo TUN",
-               [("25k", "lines of Rust"), ("158", "tests"), ("3", "components\nchecked by hash")]),
-        "ru": ("ПРИЛОЖЕНИЕ ДЛЯ WINDOWS", "BPN для Windows", "Tauri + привилегированный сервис на Rust",
-               [("25k", "строк Rust"), ("158", "тестов"), ("3", "компонента\nсверяются по хешу")]),
-    }),
-    "product": ("stack", {
-        "en": ("THE PRODUCT · PRIVATE", "BPN / BadVPN", "Telegram bot, backend, panel, nodes, two apps",
-               [("~190k", "lines of code"), ("1.8k", "commits"), ("160+", "test files")]),
-        "ru": ("САМ ПРОДУКТ · ПРИВАТНЫЙ", "BPN / BadVPN", "Бот, бэкенд, панель, ноды и два приложения",
-               [("~190k", "строк кода"), ("1.8k", "коммитов"), ("160+", "тестовых файлов")]),
-    }),
-    "mihomo": ("fork", {
-        "en": ("PROXY CORE · FORK", "Rerowros/mihomo", "Upstream tag + 5 patches: REALITY, uTLS, XHTTP",
-               [("×5–8", "faster XHTTP\nupload"), ("3 / 3", "Xray versions\nconnect"), ("5", "patches, rebased\nper release")]),
-        "ru": ("ЯДРО · ФОРК", "Rerowros/mihomo", "Тег upstream + 5 патчей: REALITY, uTLS, XHTTP",
-               [("×5–8", "быстрее отправка\nпо XHTTP"), ("3 / 3", "версии Xray\nподключаются"), ("5", "патчей, ребейз\nна каждый релиз")]),
-    }),
-    "clashfest": ("pr", {
-        "en": ("OPEN SOURCE · CORE CONTRIBUTOR", "Nemu-x/ClashFest", "Android client on mihomo · 222★",
-               [("30", "merged PRs"), ("+19.6k", "lines"), ("~15%", "of the codebase")]),
-        "ru": ("OPEN SOURCE · CORE CONTRIBUTOR", "Nemu-x/ClashFest", "Android-клиент на mihomo · 222★",
-               [("30", "смёрженных PR"), ("+19.6k", "строк"), ("~15%", "текущего кода")]),
-    }),
-    "tg-recall": ("chat", {
-        "en": ("PROJECT · PYTHON · MCP", "tg-recall", "Local-first Telegram archive for people and AI",
-               [("300+", "tests"), ("15k", "lines of Python"), ("2 OS", "CI on Windows\nand Linux")]),
-        "ru": ("ПРОЕКТ · PYTHON · MCP", "tg-recall", "Локальный архив Telegram для людей и AI",
-               [("300+", "тестов"), ("15k", "строк Python"), ("2 ОС", "CI на Windows\nи Linux")]),
-    }),
-    "sre-bench": ("terminal", {
-        "en": ("PROJECT · BENCHMARK", "sre-agent-bench", "AI agents fix a broken Ubuntu server over SSH",
-               [("11", "injected faults"), ("11", "model / harness\nsetups"), ("2", "survival checks:\nSIGKILL, reboot")]),
-        "ru": ("ПРОЕКТ · БЕНЧМАРК", "sre-agent-bench", "AI-агенты чинят сломанный сервер по SSH",
-               [("11", "неисправностей"), ("11", "конфигураций\nмоделей"), ("2", "проверки:\nSIGKILL, ребут")]),
-    }),
-    "wiki-mcp": ("book", {
-        "en": ("PROJECT · CLOUDFLARE WORKERS", "wiki-mcp", "Agent-maintained wiki as a remote MCP server",
-               [("0.83", "recall@5 on\na golden set"), ("536", "pages in the\nprivate wiki"), ("OAuth 2.1", "claude.ai,\nChatGPT")]),
-        "ru": ("ПРОЕКТ · CLOUDFLARE WORKERS", "wiki-mcp", "Вики, которую ведут агенты, как MCP-сервер",
-               [("0.83", "recall@5 на\nэталоне"), ("536", "страниц в\nприватной вики"), ("OAuth 2.1", "claude.ai,\nChatGPT")]),
-    }),
-    "pasarguard": ("panel", {
-        "en": ("OPEN SOURCE · CONTRIBUTOR", "PasarGuard", "VPN panel + node · 2.6k★",
-               [("4", "merged PRs"), ("4", "in review"), ("3", "repos: panel,\nnode, scripts")]),
-        "ru": ("OPEN SOURCE · КОНТРИБЬЮТОР", "PasarGuard", "VPN-панель + нода · 2.6k★",
-               [("4", "смёржено"), ("4", "на ревью"), ("3", "репо: panel,\nnode, scripts")]),
-    }),
-}
-
-
 def main():
     OUT.mkdir(exist_ok=True)
+    for old in OUT.glob("*.svg"):
+        old.unlink()
     for name, fn in (("header", header), ("bpn-architecture", architecture), ("mihomo-reality", reality),
                      ("mihomo-xhttp", xhttp), ("android-connect", android_connect)):
         for theme, c in THEMES.items():
@@ -407,7 +346,8 @@ def main():
         for lang, args in langs.items():
             suffix = "" if lang == "en" else "-ru"
             for theme, c in THEMES.items():
-                (OUT / f"banner-{name}{suffix}-{theme}.svg").write_text(banner(kind, *args, c, link=name != "product"), encoding="utf-8")
+                (OUT / f"banner-{name}{suffix}-{theme}.svg").write_text(
+                    banner(kind, *args, c, link=name != "product"), encoding="utf-8")
     print(len(list(OUT.iterdir())), "files in", OUT)
 
 

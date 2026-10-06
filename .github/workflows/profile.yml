@@ -1,0 +1,51 @@
+name: profile
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [scripts/**, .github/workflows/profile.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Activity card
+        run: python scripts/stats.py dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOGIN: ${{ github.repository_owner }}
+
+      - name: Contribution snake
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake-dark.svg?palette=github-dark&color_snake=#e81cff&color_dots=#161b22,#22306b,#2f6bff,#8b3dff,#e81cff
+            dist/snake-light.svg?color_snake=#8b3dff&color_dots=#ebedf0,#c7d4ff,#2f6bff,#8b3dff,#e81cff
+
+      - name: Publish to the output branch
+        uses: crazy-max/ghaction-github-pages@v5
+        with:
+          target_branch: output
+          build_dir: dist
+          keep_history: false
+          jekyll: false
+          commit_message: Render profile stats
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

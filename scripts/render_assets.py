@@ -111,33 +111,33 @@ def banner(kind, title, subtitle, stats, c):
 
 BANNERS = {
     "android": ("phone", {
-        "en": ("BadVPN for Android", "VPN client on my mihomo fork · Android 6+",
-               [("0.85 s", "tap → VPN up"), ("0.2 s", "cold start"), ("1 key", "signs every APK")]),
-        "ru": ("BadVPN для Android", "VPN-клиент на моём форке mihomo · Android 6+",
-               [("0.85 с", "нажатие → VPN"), ("0.2 с", "холодный старт"), ("1 ключ", "подпись APK")]),
+        "en": ("BadVPN for Android", "ClashFest fork on my mihomo core · Android 6+",
+               [("0.85 s", "tap → VPN up"), ("0.2 s", "cold start"), ("589", "my commits")]),
+        "ru": ("BadVPN для Android", "Форк ClashFest на моём ядре mihomo · Android 6+",
+               [("0.85 с", "нажатие → VPN"), ("0.2 с", "холодный старт"), ("589", "моих коммитов")]),
     }),
     "windows": ("laptop", {
-        "en": ("BPN for Windows", "Tauri UI + privileged Rust service · Mihomo TUN",
-               [("25k", "lines of Rust"), ("158", "tests"), ("3", "deps by hash")]),
-        "ru": ("BPN для Windows", "Tauri + привилегированный сервис на Rust · Mihomo TUN",
-               [("25k", "строк Rust"), ("158", "тестов"), ("3", "сверка хешей")]),
+        "en": ("BPN for Windows", "Tauri UI → IPC → privileged Rust service",
+               [("25k", "lines of Rust"), ("158", "tests"), ("10/11", "Windows, x64")]),
+        "ru": ("BPN для Windows", "Tauri → IPC → привилегированный сервис на Rust",
+               [("25k", "строк Rust"), ("158", "тестов"), ("10/11", "Windows, x64")]),
     }),
     "product": ("stack", {
-        "en": ("BPN / BadVPN", "Private · Telegram bot, backend, panel, nodes",
+        "en": ("BPN / BadVPN", "The service behind both apps · private",
                [("~190k", "lines of code"), ("1.8k", "commits"), ("160+", "test files")]),
-        "ru": ("BPN / BadVPN", "Приватный · Telegram-бот, бэкенд, панель, ноды",
+        "ru": ("BPN / BadVPN", "Сервис за обоими приложениями · приватный",
                [("~190k", "строк кода"), ("1.8k", "коммитов"), ("160+", "файлов тестов")]),
     }),
     "mihomo": ("fork", {
-        "en": ("Rerowros/mihomo", "Proxy core fork · upstream tag + 5 patches",
+        "en": ("Rerowros/mihomo", "Network core of both apps · upstream + 5 patches",
                [("×5–8", "XHTTP upload"), ("3 / 3", "Xray versions OK"), ("5", "patches")]),
-        "ru": ("Rerowros/mihomo", "Форк ядра · тег upstream + 5 патчей",
+        "ru": ("Rerowros/mihomo", "Сетевое ядро обоих приложений · upstream + 5 патчей",
                [("×5–8", "отправка XHTTP"), ("3 / 3", "версии Xray"), ("5", "патчей")]),
     }),
     "clashfest": ("pr", {
-        "en": ("Nemu-x/ClashFest", "Core contributor · Android client on mihomo · 222★",
+        "en": ("Nemu-x/ClashFest", "Core contributor · open-source Android client · 222★",
                [("30", "merged PRs"), ("+19.6k", "lines"), ("~15%", "of codebase")]),
-        "ru": ("Nemu-x/ClashFest", "Core contributor · Android-клиент на mihomo · 222★",
+        "ru": ("Nemu-x/ClashFest", "Core contributor · open-source Android-клиент · 222★",
                [("30", "PR смёржено"), ("+19.6k", "строк"), ("~15%", "всего кода")]),
     }),
     "tg-recall": ("chat", {
@@ -147,9 +147,9 @@ BANNERS = {
                [("300+", "тестов"), ("15k", "строк"), ("MCP", "ссылки tg://")]),
     }),
     "pasarguard": ("panel", {
-        "en": ("PasarGuard", "Contributor · VPN panel + node · 2.6k★",
+        "en": ("PasarGuard", "Contributor · open-source VPN panel and node · 2.6k★",
                [("4", "merged PRs"), ("4", "in review"), ("3", "repos")]),
-        "ru": ("PasarGuard", "Контрибьютор · VPN-панель + нода · 2.6k★",
+        "ru": ("PasarGuard", "Контрибьютор · open-source VPN-панель и нода · 2.6k★",
                [("4", "смёржено"), ("4", "на ревью"), ("3", "репо")]),
     }),
 }

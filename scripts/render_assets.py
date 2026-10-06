@@ -316,7 +316,7 @@ def glyph(kind, cx, cy, c):
     raise ValueError(kind)
 
 
-def banner(kind, kicker, title, subtitle, stats, c):
+def banner(kind, kicker, title, subtitle, stats, c, link=True):
     W, H = 1200, 190
     b = [frame(W, H, c)]
     b.append(f'<rect x="1" y="1" width="8" height="{H-2}" rx="4" fill="url(#gu)"/>')
@@ -332,7 +332,8 @@ def banner(kind, kicker, title, subtitle, stats, c):
         b.append(t(x, 102, num, size, "url(#g)", 700))
         for j, line in enumerate(lab.split("\n")):
             b.append(t(x, 131 + j * 20, line, 16, c["muted"]))
-    b.append(t(1168, 34, "↗", 18, c["faint"], 600, "end"))
+    if link:
+        b.append(t(1168, 34, "↗", 18, c["faint"], 600, "end"))
     return svg(W, H, "".join(b), f"{title} — {subtitle}")
 
 
@@ -406,7 +407,7 @@ def main():
         for lang, args in langs.items():
             suffix = "" if lang == "en" else "-ru"
             for theme, c in THEMES.items():
-                (OUT / f"banner-{name}{suffix}-{theme}.svg").write_text(banner(kind, *args, c), encoding="utf-8")
+                (OUT / f"banner-{name}{suffix}-{theme}.svg").write_text(banner(kind, *args, c, link=name != "product"), encoding="utf-8")
     print(len(list(OUT.iterdir())), "files in", OUT)
 
 

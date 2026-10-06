@@ -1,6 +1,6 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../assets/header-dark.svg">
-  <img alt="Iaroslav · Rerowros — censorship-resistant networking, VPN clients, Telegram and AI tools" src="../assets/header-light.svg" width="100%">
+  <img alt="Rerowros — Iaroslav, software engineer" src="../assets/header-light.svg" width="100%">
 </picture>
 
 <p>
@@ -8,7 +8,7 @@
   <a href="../README.md"><img src="https://img.shields.io/badge/README-in%20English-171717?labelColor=000000&style=flat-square" alt="README in English"></a>
 </p>
 
-Делаю и веду VPN-продукт целиком: Telegram-бот и бэкенд, приложения для Windows и Android, пропатченное ядро и серверы. Контрибьючу в open-source, на котором он построен.
+Инженер: Android, Windows и бэкенд. Довожу свои приложения от кода до релиза и контрибьючу в open-source, на котором они построены.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Rerowros/Rerowros/output/stats-dark.svg">

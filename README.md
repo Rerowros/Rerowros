@@ -1,6 +1,6 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/header-dark.svg">
-  <img alt="Iaroslav · Rerowros — censorship-resistant networking, VPN clients, Telegram and AI tools" src="assets/header-light.svg" width="100%">
+  <img alt="Rerowros — Iaroslav, software engineer" src="assets/header-light.svg" width="100%">
 </picture>
 
 <p>
@@ -8,14 +8,14 @@
   <a href="docs/README.ru.md"><img src="https://img.shields.io/badge/README-по--русски-171717?labelColor=000000&style=flat-square" alt="README in Russian"></a>
 </p>
 
-I build and run a VPN product end to end: the Telegram bot and backend, the Windows and Android apps, a patched proxy core and the servers. I also contribute upstream to the open-source stack it runs on.
+Software engineer across Android, Windows and backend. I take my own apps from code to release and contribute to the open-source projects they are built on.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Rerowros/Rerowros/output/stats-dark.svg">
   <img alt="Activity over the last 12 months: contributions, streaks, merged PRs to other repos" src="https://raw.githubusercontent.com/Rerowros/Rerowros/output/stats-light.svg" width="100%">
 </picture>
 
-## Apps I ship
+## Apps
 
 <a href="https://github.com/Rerowros/bpn-android-releases">
 <picture>

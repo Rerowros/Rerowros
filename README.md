@@ -150,15 +150,24 @@ Open-source Android client on mihomo and the base of my own Android app. [30 mer
 </a>
 
 <details>
-<summary><b>4 merged, 4 in review</b></summary>
+<summary><b>9 merged, more in review</b></summary>
 <br>
 
 Open-source VPN panel and node.
 
-- merged: Mihomo xHTTP subscription options ([panel#509](https://github.com/PasarGuard/panel/pull/509)), UTC-correct API dates ([panel#208](https://github.com/PasarGuard/panel/pull/208)), share-link fix ([panel#880](https://github.com/PasarGuard/panel/pull/880)), WireGuard log timestamps ([node#47](https://github.com/PasarGuard/node/pull/47))
-- in review: per-app routing and DNS editor ([panel#759](https://github.com/PasarGuard/panel/pull/759)), confirmed access revocation with node-sync fencing ([panel#756](https://github.com/PasarGuard/panel/pull/756)), node lifecycle hardening ([node#78](https://github.com/PasarGuard/node/pull/78)), atomic node updates with rollback ([scripts#25](https://github.com/PasarGuard/scripts/pull/25))
+- merged: Mihomo xHTTP subscription options ([panel#509](https://github.com/PasarGuard/panel/pull/509)), UTC-correct API dates ([panel#208](https://github.com/PasarGuard/panel/pull/208)), share-link fix ([panel#880](https://github.com/PasarGuard/panel/pull/880)), loopback-only client inbounds ([panel#879](https://github.com/PasarGuard/panel/pull/879)), admin self-limit fix ([panel#1093](https://github.com/PasarGuard/panel/pull/1093)), WireGuard archive names ([panel#1103](https://github.com/PasarGuard/panel/pull/1103)), scoped CI permissions ([panel#1102](https://github.com/PasarGuard/panel/pull/1102)), WireGuard log timestamps ([node#47](https://github.com/PasarGuard/node/pull/47))
+- in review: confirmed access revocation with node-sync fencing ([panel#756](https://github.com/PasarGuard/panel/pull/756)), a DB pool deadlock on subscription requests ([panel#1219](https://github.com/PasarGuard/panel/pull/1219)), node lifecycle hardening ([node#78](https://github.com/PasarGuard/node/pull/78)), atomic node updates with rollback ([scripts#25](https://github.com/PasarGuard/scripts/pull/25))
 
 </details>
+
+## Security
+
+Defensive work on the software I ship and depend on: I audit it, report what I find to the maintainers and send the fix.
+
+- **Advisory [GHSA-rmmh-v4mj-r3rm](https://github.com/Nemu-x/ClashFest/security/advisories/GHSA-rmmh-v4mj-r3rm)** in ClashFest, credited as finder (medium, CVSS 4.4). An exported Android activity let any installed app switch the VPN off without a permission. Fixed in 0.10.0 by my patch ([#166](https://github.com/Nemu-x/ClashFest/pull/166)).
+- **ClashFest hardening audit, July 2026:** 16 merged PRs. APK updates are verified by origin, package and signer before install ([#158](https://github.com/Nemu-x/ClashFest/pull/158)); local proxy listeners get their credentials before an untrusted profile loads ([#162](https://github.com/Nemu-x/ClashFest/pull/162)); limits on untrusted subscription input ([#172](https://github.com/Nemu-x/ClashFest/pull/172)); a committed release keystore removed ([#168](https://github.com/Nemu-x/ClashFest/pull/168)); CI and Gradle inputs pinned ([#173](https://github.com/Nemu-x/ClashFest/pull/173)).
+- **PasarGuard panel:** limited admins could raise their own limits ([#1093](https://github.com/PasarGuard/panel/pull/1093)); the generated Xray client config opened an unauthenticated proxy to the local network ([#879](https://github.com/PasarGuard/panel/pull/879)); file names inside the WireGuard ZIP are sanitized ([#1103](https://github.com/PasarGuard/panel/pull/1103)); CI token permissions scoped per job ([#1102](https://github.com/PasarGuard/panel/pull/1102)).
+- **In review upstream:** local control boundaries and Gradle distribution checks in ClashMetaForAndroid ([#798](https://github.com/MetaCubeX/ClashMetaForAndroid/pull/798), [#799](https://github.com/MetaCubeX/ClashMetaForAndroid/pull/799)).
 
 ## Projects
 

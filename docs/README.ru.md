@@ -150,15 +150,24 @@ Open-source Android-клиент на mihomo и основа моего Android-
 </a>
 
 <details>
-<summary><b>4 смёржено, 4 на ревью</b></summary>
+<summary><b>9 смёржено, ещё часть на ревью</b></summary>
 <br>
 
 Open-source VPN-панель и нода.
 
-- смёржено: xHTTP-опции в подписках Mihomo ([panel#509](https://github.com/PasarGuard/panel/pull/509)), даты API в UTC ([panel#208](https://github.com/PasarGuard/panel/pull/208)), share-link ([panel#880](https://github.com/PasarGuard/panel/pull/880)), время в логах WireGuard ([node#47](https://github.com/PasarGuard/node/pull/47))
-- на ревью: редактор маршрутизации и DNS по приложениям ([panel#759](https://github.com/PasarGuard/panel/pull/759)), подтверждаемый отзыв доступа с fencing синхронизации нод ([panel#756](https://github.com/PasarGuard/panel/pull/756)), жизненный цикл ноды ([node#78](https://github.com/PasarGuard/node/pull/78)), атомарное обновление ноды с откатом ([scripts#25](https://github.com/PasarGuard/scripts/pull/25))
+- смёржено: xHTTP-опции в подписках Mihomo ([panel#509](https://github.com/PasarGuard/panel/pull/509)), даты API в UTC ([panel#208](https://github.com/PasarGuard/panel/pull/208)), share-link ([panel#880](https://github.com/PasarGuard/panel/pull/880)), клиентские inbound только на loopback ([panel#879](https://github.com/PasarGuard/panel/pull/879)), запрет админу менять свои лимиты ([panel#1093](https://github.com/PasarGuard/panel/pull/1093)), имена в архиве WireGuard ([panel#1103](https://github.com/PasarGuard/panel/pull/1103)), права CI по задачам ([panel#1102](https://github.com/PasarGuard/panel/pull/1102)), время в логах WireGuard ([node#47](https://github.com/PasarGuard/node/pull/47))
+- на ревью: подтверждаемый отзыв доступа с fencing синхронизации нод ([panel#756](https://github.com/PasarGuard/panel/pull/756)), дедлок пула БД на запросах подписки ([panel#1219](https://github.com/PasarGuard/panel/pull/1219)), жизненный цикл ноды ([node#78](https://github.com/PasarGuard/node/pull/78)), атомарное обновление ноды с откатом ([scripts#25](https://github.com/PasarGuard/scripts/pull/25))
 
 </details>
+
+## Безопасность
+
+Защитная работа над софтом, который я выпускаю и на который опираюсь: проверяю код, сообщаю о находках мейнтейнерам и присылаю исправление.
+
+- **Advisory [GHSA-rmmh-v4mj-r3rm](https://github.com/Nemu-x/ClashFest/security/advisories/GHSA-rmmh-v4mj-r3rm)** в ClashFest, указан как нашедший (medium, CVSS 4.4). Экспортированная Android-activity позволяла любому установленному приложению выключить VPN без разрешений. Исправлено в 0.10.0 моим патчем ([#166](https://github.com/Nemu-x/ClashFest/pull/166)).
+- **Аудит ClashFest, июль 2026:** 16 смёрженных PR. APK-обновления проверяются по источнику, пакету и подписи до установки ([#158](https://github.com/Nemu-x/ClashFest/pull/158)); локальные прокси-порты получают пароль до загрузки недоверенного профиля ([#162](https://github.com/Nemu-x/ClashFest/pull/162)); лимиты на недоверенные данные подписки ([#172](https://github.com/Nemu-x/ClashFest/pull/172)); из репозитория убран закоммиченный release keystore ([#168](https://github.com/Nemu-x/ClashFest/pull/168)); зафиксированы версии в CI и Gradle ([#173](https://github.com/Nemu-x/ClashFest/pull/173)).
+- **Панель PasarGuard:** ограниченный админ мог поднять себе лимиты ([#1093](https://github.com/PasarGuard/panel/pull/1093)); сгенерированный конфиг Xray-клиента открывал прокси без пароля в локальную сеть ([#879](https://github.com/PasarGuard/panel/pull/879)); имена файлов в ZIP с WireGuard очищаются ([#1103](https://github.com/PasarGuard/panel/pull/1103)); права CI-токена выданы по задачам ([#1102](https://github.com/PasarGuard/panel/pull/1102)).
+- **На ревью в upstream:** границы локального управления и проверка дистрибутива Gradle в ClashMetaForAndroid ([#798](https://github.com/MetaCubeX/ClashMetaForAndroid/pull/798), [#799](https://github.com/MetaCubeX/ClashMetaForAndroid/pull/799)).
 
 ## Проекты
 

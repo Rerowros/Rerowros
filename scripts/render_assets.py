@@ -135,9 +135,9 @@ BANNERS = {
                [("×5–8", "отправка XHTTP"), ("3 / 3", "версии Xray"), ("5", "патчей")]),
     }),
     "clashfest": ("pr", {
-        "en": ("Nemu-x/ClashFest", "Core contributor · open-source Android client · 222★",
+        "en": ("Nemu-x/ClashFest", "Core contributor · open-source Android client · 255★",
                [("30", "merged PRs"), ("+19.6k", "lines"), ("~15%", "of codebase")]),
-        "ru": ("Nemu-x/ClashFest", "Core contributor · open-source Android-клиент · 222★",
+        "ru": ("Nemu-x/ClashFest", "Core contributor · open-source Android-клиент · 255★",
                [("30", "PR смёржено"), ("+19.6k", "строк"), ("~15%", "всего кода")]),
     }),
     "tg-recall": ("chat", {
@@ -147,10 +147,10 @@ BANNERS = {
                [("300+", "тестов"), ("15k", "строк"), ("MCP", "ссылки tg://")]),
     }),
     "pasarguard": ("panel", {
-        "en": ("PasarGuard", "Contributor · open-source VPN panel and node · 2.6k★",
-               [("4", "merged PRs"), ("4", "in review"), ("3", "repos")]),
-        "ru": ("PasarGuard", "Контрибьютор · open-source VPN-панель и нода · 2.6k★",
-               [("4", "смёржено"), ("4", "на ревью"), ("3", "репо")]),
+        "en": ("PasarGuard", "Contributor · open-source VPN panel and node · 2.8k★",
+               [("9", "merged PRs"), ("4", "security fixes"), ("4", "repos")]),
+        "ru": ("PasarGuard", "Контрибьютор · open-source VPN-панель и нода · 2.8k★",
+               [("9", "смёржено"), ("4", "по безопасности"), ("4", "репо")]),
     }),
 }
 
